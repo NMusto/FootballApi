@@ -11,9 +11,9 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 @Data
-@Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
 public class Club {
 
     @Id
