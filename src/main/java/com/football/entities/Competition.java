@@ -14,6 +14,7 @@ import java.util.List;
 @Entity
 public class Competition {
 
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
@@ -27,7 +28,7 @@ public class Competition {
     @Column(name = "end_date")
     private LocalDate endDate;
 
-    @ManyToMany(targetEntity = Club.class, fetch = FetchType.LAZY)
+    @ManyToMany(targetEntity = Club.class, fetch = FetchType.LAZY, mappedBy = "competitions")
     private List<Club> clubs;
 
 }
