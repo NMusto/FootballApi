@@ -20,4 +20,7 @@ public class Coach {
     private String last_name;
     private String nationality;
     private Integer age;
+
+    @OneToOne(targetEntity = Club.class, mappedBy = "coach")
+    private Club club;
 }

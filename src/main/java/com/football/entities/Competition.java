@@ -1,14 +1,12 @@
 package com.football.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -28,5 +26,8 @@ public class Competition {
 
     @Column(name = "end_date")
     private LocalDate endDate;
+
+    @ManyToMany(targetEntity = Club.class, fetch = FetchType.LAZY)
+    private List<Club> clubs;
 
 }

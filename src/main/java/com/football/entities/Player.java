@@ -24,4 +24,7 @@ public class Player {
     private String position;
     private Integer number;
 
+    @ManyToOne(targetEntity = Club.class)
+    private Club club;
+
 }
