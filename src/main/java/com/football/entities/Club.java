@@ -2,6 +2,7 @@ package com.football.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +11,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Entity
 public class Club {
 
@@ -17,18 +19,19 @@ public class Club {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    private boolean debt;
 
-    @OneToOne(targetEntity = Coach.class)
+    @OneToOne(targetEntity = Coach.class, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "coach_id")
     private Coach coach;
 
-    @OneToMany(targetEntity = Player.class, fetch = FetchType.LAZY, mappedBy = "club")
+    @OneToMany(targetEntity = Player.class, fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, mappedBy = "club")
     private List<Player> players;
 
-    @ManyToOne(targetEntity = Association.class)
+    @ManyToOne(targetEntity = Association.class, cascade = CascadeType.PERSIST)
     private Association association;
 
-    @ManyToMany(targetEntity = Competition.class, fetch = FetchType.LAZY)
+    @ManyToMany(targetEntity = Competition.class, fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinTable(name = "club_competition", joinColumns = @JoinColumn(name = "club_id"), inverseJoinColumns = @JoinColumn(name = "competition_id"))
     private List<Competition> competitions;
 }

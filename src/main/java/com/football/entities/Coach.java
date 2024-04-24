@@ -2,12 +2,14 @@ package com.football.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Entity
 public class Coach {
 
@@ -17,7 +19,7 @@ public class Coach {
     private String name;
 
     @Column(name = "last_name")
-    private String last_name;
+    private String lastName;
     private String nationality;
     private Integer age;
 
