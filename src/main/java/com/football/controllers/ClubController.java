@@ -1,7 +1,6 @@
 package com.football.controllers;
 
 import com.football.dtos.inDTO.ClubInDTO;
-import com.football.dtos.outDTO.ClubOutDTO;
 import com.football.entities.Club;
 import com.football.projections.IClubOutProjection;
 import com.football.services.ClubService;

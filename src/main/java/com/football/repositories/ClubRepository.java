@@ -12,4 +12,6 @@ public interface ClubRepository extends JpaRepository<Club, Long> {
 
     public Optional<IClubOutProjection> findClubById(Long clubId);
 
+    public Optional<Club> findById(Long clubId);
+
 }

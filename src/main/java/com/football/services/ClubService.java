@@ -33,5 +33,13 @@ public class ClubService {
         return optionalClub.get();
     }
 
+    public Club findById(Long clubId) {
+        Optional<Club> optionalClub = clubRepository.findById(clubId);
+        if(optionalClub.isEmpty()) {
+            return null;
+        }
+        return optionalClub.get();
+    }
+
 
 }

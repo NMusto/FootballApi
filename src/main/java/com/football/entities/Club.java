@@ -22,7 +22,7 @@ public class Club {
     private boolean debt;
     private Integer associationNumber;
 
-    @OneToOne(targetEntity = Coach.class)
+    @OneToOne(targetEntity = Coach.class, mappedBy = "club")
     private Coach coach;
 
     @OneToMany(targetEntity = Player.class, fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, mappedBy = "club")
