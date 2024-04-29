@@ -20,9 +20,9 @@ public class Club {
     private Long id;
     private String name;
     private boolean debt;
+    private Integer associationNumber;
 
-    @OneToOne(targetEntity = Coach.class, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "coach_id")
+    @OneToOne(targetEntity = Coach.class)
     private Coach coach;
 
     @OneToMany(targetEntity = Player.class, fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, mappedBy = "club")
@@ -34,4 +34,6 @@ public class Club {
     @ManyToMany(targetEntity = Competition.class, fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinTable(name = "club_competition", joinColumns = @JoinColumn(name = "club_id"), inverseJoinColumns = @JoinColumn(name = "competition_id"))
     private List<Competition> competitions;
+
+
 }

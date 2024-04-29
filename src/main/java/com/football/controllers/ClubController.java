@@ -3,17 +3,15 @@ package com.football.controllers;
 import com.football.dtos.inDTO.ClubInDTO;
 import com.football.dtos.outDTO.ClubOutDTO;
 import com.football.entities.Club;
+import com.football.projections.IClubOutProjection;
 import com.football.services.ClubService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/club")
 public class ClubController {
 
     private ClubService clubService;
@@ -22,8 +20,13 @@ public class ClubController {
         this.clubService = clubService;
     }
 
-    @PostMapping("/createclub")
+    @PostMapping("/create")
     public ResponseEntity<Club> createClub(@RequestBody @Valid ClubInDTO clubInDTO) {
         return new ResponseEntity<>(clubService.createClub(clubInDTO), HttpStatus.CREATED);
+    }
+
+    @GetMapping("/findclub/{clubId}")
+    public ResponseEntity<IClubOutProjection> findClubById(@PathVariable @Valid Long clubId) {
+        return new ResponseEntity<>(clubService.findClubById(clubId), HttpStatus.OK);
     }
 }
