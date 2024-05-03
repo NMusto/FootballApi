@@ -1,8 +1,7 @@
 package com.football.dtos.inDTO;
 
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,10 +12,11 @@ import org.springframework.validation.annotation.Validated;
 @NoArgsConstructor
 public class ClubInDTO {
 
-    @NotBlank
+    @NotEmpty
+    @Pattern(regexp = "^[a-zA-Z]+$", message = "debe estar formado solo por letras")
     private String name;
 
-    @NotNull
+    @NotNull @Positive
     private Integer associationNumber;
 
 }
