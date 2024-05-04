@@ -5,6 +5,8 @@ import com.football.entities.Club;
 import com.football.projections.IClubOutProjection;
 import com.football.services.ClubService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,5 +29,12 @@ public class ClubController {
     @GetMapping("/findclub/{clubId}")
     public ResponseEntity<IClubOutProjection> findClubById(@PathVariable @Valid Long clubId) {
         return new ResponseEntity<>(clubService.findClubById(clubId), HttpStatus.OK);
+    }
+
+    @GetMapping("/findall")
+    public ResponseEntity<Page<IClubOutProjection>> findAllClubs(@RequestParam(defaultValue = "0") int page,
+                                                                 @RequestParam(defaultValue = "10") int size) {
+        Page<IClubOutProjection> clubs = clubService.findAllClubs(PageRequest.of(page, size));
+        return new ResponseEntity<>(clubs, HttpStatus.OK);
     }
 }
