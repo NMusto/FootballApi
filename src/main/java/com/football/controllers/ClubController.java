@@ -7,6 +7,7 @@ import com.football.services.ClubService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,8 +34,9 @@ public class ClubController {
 
     @GetMapping("/findall")
     public ResponseEntity<Page<IClubOutProjection>> findAllClubs(@RequestParam(defaultValue = "0") int page,
-                                                                 @RequestParam(defaultValue = "10") int size) {
-        Page<IClubOutProjection> clubs = clubService.findAllClubs(PageRequest.of(page, size));
+                                                                 @RequestParam(defaultValue = "10") int size,
+                                                                 @RequestParam(defaultValue = "name") String name) {
+        Page<IClubOutProjection> clubs = clubService.findAllClubs(PageRequest.of(page, size, Sort.by(name).ascending()));
         return new ResponseEntity<>(clubs, HttpStatus.OK);
     }
 }
