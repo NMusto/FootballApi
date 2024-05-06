@@ -1,9 +1,13 @@
 package com.football.services;
 
 import com.football.dtos.inDTO.ClubInDTO;
+import com.football.dtos.outDTO.ClubOutDTO;
 import com.football.entities.Club;
 import com.football.exceptions.InfoExceptions;
 import com.football.mappers.ClubInDTOToClub;
+import com.football.mappers.ClubToClubOutDTO;
+import com.football.mappers.IMapper;
+import com.football.projections.IClubCoachProjection;
 import com.football.projections.IClubOutProjection;
 import com.football.repositories.ClubRepository;
 import org.springframework.data.domain.Page;
@@ -19,19 +23,23 @@ public class ClubService {
 
     private final ClubRepository clubRepository;
     private final ClubInDTOToClub clubInDTOToClub;
+    private final ClubToClubOutDTO clubToClubOutDTO;
 
-    public ClubService(ClubRepository clubRepository, ClubInDTOToClub clubInDTOToClub) {
+    public ClubService(ClubRepository clubRepository, ClubInDTOToClub clubInDTOToClub, ClubToClubOutDTO clubToClubOutDTO) {
         this.clubRepository = clubRepository;
         this.clubInDTOToClub = clubInDTOToClub;
+        this.clubToClubOutDTO = clubToClubOutDTO;
     }
 
-    public Club createClub(ClubInDTO clubInDTO) {
+    public ClubOutDTO createClub(ClubInDTO clubInDTO) {
         Club club = clubInDTOToClub.map(clubInDTO);
-        return clubRepository.save(club);
+        clubRepository.save(club);
+        ClubOutDTO clubOutDTO = clubToClubOutDTO.map(club);
+        return clubOutDTO;
     }
 
-    public IClubOutProjection findClubById(Long clubId) {
-        Optional<IClubOutProjection> optionalClub = clubRepository.findClubById(clubId);
+    public IClubCoachProjection findClubById(Long clubId) {
+        Optional<IClubCoachProjection> optionalClub = clubRepository.findClubById(clubId);
         if(optionalClub.isEmpty()) {
             throw new InfoExceptions("Id Inexistente", HttpStatus.NOT_FOUND);
         }
@@ -47,8 +55,8 @@ public class ClubService {
         return optionalClub.get();
     }
 
-    public Page<IClubOutProjection> findAllClubs(Pageable pageable) {
-        Page<IClubOutProjection> clubs = clubRepository.findAllProjetedBy(pageable);
+    public Page<IClubCoachProjection> findAllClubs(Pageable pageable) {
+        Page<IClubCoachProjection> clubs = clubRepository.findAllProjetedBy(pageable);
         if (clubs.isEmpty()) {
             throw new InfoExceptions("No existen clubs registrados actualmente", HttpStatus.NOT_FOUND);
         }

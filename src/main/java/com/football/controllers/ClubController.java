@@ -1,7 +1,9 @@
 package com.football.controllers;
 
 import com.football.dtos.inDTO.ClubInDTO;
+import com.football.dtos.outDTO.ClubOutDTO;
 import com.football.entities.Club;
+import com.football.projections.IClubCoachProjection;
 import com.football.projections.IClubOutProjection;
 import com.football.services.ClubService;
 import jakarta.validation.Valid;
@@ -23,20 +25,20 @@ public class ClubController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<Club> createClub(@RequestBody @Valid ClubInDTO clubInDTO) {
+    public ResponseEntity<ClubOutDTO> createClub(@RequestBody @Valid ClubInDTO clubInDTO) {
         return new ResponseEntity<>(clubService.createClub(clubInDTO), HttpStatus.CREATED);
     }
 
     @GetMapping("/findclub/{clubId}")
-    public ResponseEntity<IClubOutProjection> findClubById(@PathVariable @Valid Long clubId) {
+    public ResponseEntity<IClubCoachProjection> findClubById(@PathVariable @Valid Long clubId) {
         return new ResponseEntity<>(clubService.findClubById(clubId), HttpStatus.OK);
     }
 
     @GetMapping("/findall")
-    public ResponseEntity<Page<IClubOutProjection>> findAllClubs(@RequestParam(defaultValue = "0") int page,
+    public ResponseEntity<Page<IClubCoachProjection>> findAllClubs(@RequestParam(defaultValue = "0") int page,
                                                                  @RequestParam(defaultValue = "10") int size,
                                                                  @RequestParam(defaultValue = "name") String name) {
-        Page<IClubOutProjection> clubs = clubService.findAllClubs(PageRequest.of(page, size, Sort.by(name).ascending()));
+        Page<IClubCoachProjection> clubs = clubService.findAllClubs(PageRequest.of(page, size, Sort.by(name).ascending()));
         return new ResponseEntity<>(clubs, HttpStatus.OK);
     }
 }
