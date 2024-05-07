@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/coach")
 public class CoachController {
@@ -29,5 +31,10 @@ public class CoachController {
     @GetMapping("/findcoach/{coachId}")
     public ResponseEntity<ICoachClubProjection> findCoachById(@PathVariable @Valid Long coachId) {
         return new ResponseEntity<>(coachService.findCoachById(coachId), HttpStatus.OK);
+    }
+
+    @GetMapping("/findall")
+    public ResponseEntity<List<ICoachClubProjection>> findAllCoaches() {
+        return new ResponseEntity<>(coachService.findAllCoaches(), HttpStatus.OK);
     }
 }
