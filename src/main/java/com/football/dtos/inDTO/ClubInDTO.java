@@ -13,7 +13,7 @@ import org.springframework.validation.annotation.Validated;
 public class ClubInDTO {
 
     @NotEmpty
-    @Pattern(regexp = "^[a-zA-Z]+$", message = "debe estar formado solo por letras")
+    @Pattern(regexp = "^[a-zA-Z ]+$", message = "debe estar formado solo por letras")
     private String name;
 
     @NotNull @Positive

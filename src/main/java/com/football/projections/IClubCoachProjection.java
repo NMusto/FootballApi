@@ -7,7 +7,6 @@ public interface IClubCoachProjection {
     Long getId();
     String getName();
     boolean getDebt();
-    Association getAssociation();
     Integer getAssociationNumber();
 
     Long getCoachId();

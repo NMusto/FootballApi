@@ -15,17 +15,17 @@ public class CoachInDTO {
 
     @NotBlank
     @Size(min = 2, max = 50)
-    @Pattern(regexp = "^[a-zA-Z]+$", message = "debe estar formado solo por letras")
+    @Pattern(regexp = "^[a-zA-Z ]+$", message = "debe estar formado solo por letras")
     private String name;
 
     @NotBlank
     @Size(min = 2, max = 50)
-    @Pattern(regexp = "^[a-zA-Z]+$", message = "debe estar formado solo por letras")
+    @Pattern(regexp = "^[a-zA-Z ]+$", message = "debe estar formado solo por letras")
     private String lastName;
 
     @NotBlank
     @Size(min = 2, max = 50)
-    @Pattern(regexp = "^[a-zA-Z]+$", message = "debe estar formado solo por letras")
+    @Pattern(regexp = "^[a-zA-Z ]+$", message = "debe estar formado solo por letras")
     private String nationality;
 
     @NotNull

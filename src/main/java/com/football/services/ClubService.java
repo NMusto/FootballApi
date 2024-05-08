@@ -6,16 +6,13 @@ import com.football.entities.Club;
 import com.football.exceptions.InfoExceptions;
 import com.football.mappers.ClubInDTOToClub;
 import com.football.mappers.ClubToClubOutDTO;
-import com.football.mappers.IMapper;
 import com.football.projections.IClubCoachProjection;
-import com.football.projections.IClubOutProjection;
 import com.football.repositories.ClubRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -63,5 +60,18 @@ public class ClubService {
         return clubs;
     }
 
+    public IClubCoachProjection updateClubById(Long clubId, ClubInDTO clubInDTO) {
+        Optional<Club> optionalclub = clubRepository.findById(clubId);
+        if (optionalclub.isEmpty()) {
+            throw new InfoExceptions("Id inexistente!", HttpStatus.NOT_FOUND);
+        }
+        Club club = optionalclub.get();
+        club.setName(clubInDTO.getName());
+        club.setAssociationNumber(clubInDTO.getAssociationNumber());
+
+        clubRepository.save(club);
+        Optional<IClubCoachProjection> clubOptional = clubRepository.findClubById(clubId);
+        return clubOptional.get();
+    }
 
 }

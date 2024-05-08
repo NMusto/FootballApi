@@ -2,9 +2,7 @@ package com.football.controllers;
 
 import com.football.dtos.inDTO.ClubInDTO;
 import com.football.dtos.outDTO.ClubOutDTO;
-import com.football.entities.Club;
 import com.football.projections.IClubCoachProjection;
-import com.football.projections.IClubOutProjection;
 import com.football.services.ClubService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -40,5 +38,10 @@ public class ClubController {
                                                                  @RequestParam(defaultValue = "name") String name) {
         Page<IClubCoachProjection> clubs = clubService.findAllClubs(PageRequest.of(page, size, Sort.by(name).ascending()));
         return new ResponseEntity<>(clubs, HttpStatus.OK);
+    }
+
+    @PutMapping("/update/{clubId}")
+    public ResponseEntity<IClubCoachProjection> updateClubById(@PathVariable @Valid Long clubId, @RequestBody @Valid ClubInDTO clubInDTO) {
+        return new ResponseEntity<>(clubService.updateClubById(clubId, clubInDTO), HttpStatus.OK);
     }
 }
