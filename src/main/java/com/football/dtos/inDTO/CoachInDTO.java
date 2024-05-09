@@ -31,12 +31,4 @@ public class CoachInDTO {
     @NotNull
     @Min(18)
     private Integer age;
-
-
-
-
-
-
-
-
 }

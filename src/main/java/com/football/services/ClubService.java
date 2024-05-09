@@ -79,22 +79,28 @@ public class ClubService {
         return clubOptional.get();
     }
 
-    public String addCoach(Long clubId, Long coachId) {
+    public String updateCoach(Long clubId, Long coachId) {
         Optional<Club> optionalClub = clubRepository.findById(clubId);
         if (optionalClub.isEmpty()) {
             throw new InfoExceptions("Club inexistente!", HttpStatus.NOT_FOUND);
         }
-        Optional<Coach> optionalCoach = coachRepository.findById(coachId);
-        if (optionalCoach.isEmpty()) {
-            throw new InfoExceptions("Coach inexistente!", HttpStatus.NOT_FOUND);
-        }
-        Coach coach = optionalCoach.get();
-
         Club club = optionalClub.get();
-        club.setCoach(coach);
 
+        if (coachId == null) {
+            club.setCoach(null);
+        }
+        else {
+            Optional<Coach> optionalCoach = coachRepository.findById(coachId);
+            if (optionalCoach.isEmpty()) {
+                throw new InfoExceptions("Coach inexistente!", HttpStatus.NOT_FOUND);
+            }
+            Coach coach = optionalCoach.get();
+
+            club.setCoach(coach);
+        }
         clubRepository.save(club);
         return "Coach id: " + coachId + " agregado exitosamente al Club id: " + clubId;
     }
+
 
 }

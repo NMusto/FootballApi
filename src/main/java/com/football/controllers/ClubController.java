@@ -4,6 +4,7 @@ import com.football.dtos.inDTO.ClubInDTO;
 import com.football.dtos.outDTO.ClubOutDTO;
 import com.football.projections.IClubCoachProjection;
 import com.football.services.ClubService;
+import jakarta.annotation.Nullable;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -45,8 +46,8 @@ public class ClubController {
         return new ResponseEntity<>(clubService.updateClubById(clubId, clubInDTO), HttpStatus.OK);
     }
 
-    @PutMapping("/addcoach/{clubId}/{coachId}")
-    public ResponseEntity<String> addCoach(@PathVariable @Valid Long clubId, @PathVariable @Valid Long coachId) {
-        return new ResponseEntity<>(clubService.addCoach(clubId, coachId), HttpStatus.CREATED);
+    @PutMapping("/updatecoach/{clubId}")
+    public ResponseEntity<String> addCoach(@PathVariable @Valid Long clubId, @RequestParam(required = false) Long coachId) {
+        return new ResponseEntity<>(clubService.updateCoach(clubId, coachId), HttpStatus.CREATED);
     }
 }
