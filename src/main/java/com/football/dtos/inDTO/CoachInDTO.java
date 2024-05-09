@@ -32,8 +32,7 @@ public class CoachInDTO {
     @Min(18)
     private Integer age;
 
-    @Positive
-    private Long clubId;
+
 
 
 

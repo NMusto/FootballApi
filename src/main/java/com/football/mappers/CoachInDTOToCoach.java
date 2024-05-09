@@ -20,14 +20,11 @@ public class CoachInDTOToCoach implements IMapper<CoachInDTO, Coach> {
     @Override
     public Coach map(CoachInDTO coachInDTO) {
 
-         Club club = clubService.findById(coachInDTO.getClubId());
-
         Coach coach = Coach.builder()
                 .name(coachInDTO.getName())
                 .lastName(coachInDTO.getLastName())
                 .nationality(coachInDTO.getNationality())
                 .age(coachInDTO.getAge())
-                .club(club)
                 .build();
         return coach;
     }

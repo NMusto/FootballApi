@@ -23,7 +23,6 @@ public class Coach {
     private String nationality;
     private Integer age;
 
-    @OneToOne(targetEntity = Club.class)
-    @JoinColumn(name = "club_id")
+    @OneToOne(targetEntity = Club.class, mappedBy = "coach")
     private Club club;
 }

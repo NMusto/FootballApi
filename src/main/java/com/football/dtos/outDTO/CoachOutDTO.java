@@ -14,6 +14,4 @@ public class CoachOutDTO {
     private String lastName;
     private String nationality;
     private Integer age;
-
-    private Long clubId;
 }

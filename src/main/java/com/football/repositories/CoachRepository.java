@@ -11,6 +11,8 @@ import java.util.Optional;
 @Repository
 public interface CoachRepository extends JpaRepository<Coach, Long> {
 
+    public Optional<Coach> findById(Long coachId);
+
     public Optional<ICoachClubProjection> findCoachById(Long coachId);
 
     public List<ICoachClubProjection> findAllProjectedBy();

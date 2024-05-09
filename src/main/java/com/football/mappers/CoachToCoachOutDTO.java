@@ -15,7 +15,6 @@ public class CoachToCoachOutDTO implements IMapper<Coach, CoachOutDTO> {
         coachOutDTO.setLastName(coach.getLastName());
         coachOutDTO.setNationality(coach.getNationality());
         coachOutDTO.setAge(coach.getAge());
-        coachOutDTO.setClubId(coach.getClub().getId());
 
         return coachOutDTO;
     }

@@ -43,6 +43,15 @@ public class CoachService {
         return optionalCoach.get();
     }
 
+    // No es un endpoint, devuelve un Coach para manejo interno de la app
+    public Coach findById(Long coachId) {
+        Optional<Coach> optionalCoach = coachRepository.findById(coachId);
+        if (optionalCoach.isEmpty()) {
+            return null;
+        }
+        return optionalCoach.get();
+    }
+
     public List<ICoachClubProjection> findAllCoaches() {
         List<ICoachClubProjection> coaches = coachRepository.findAllProjectedBy();
         if (coaches.isEmpty()) {
@@ -50,4 +59,5 @@ public class CoachService {
         }
         return coaches;
     }
+
 }

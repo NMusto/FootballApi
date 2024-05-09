@@ -44,4 +44,9 @@ public class ClubController {
     public ResponseEntity<IClubCoachProjection> updateClubById(@PathVariable @Valid Long clubId, @RequestBody @Valid ClubInDTO clubInDTO) {
         return new ResponseEntity<>(clubService.updateClubById(clubId, clubInDTO), HttpStatus.OK);
     }
+
+    @PutMapping("/addcoach/{clubId}/{coachId}")
+    public ResponseEntity<String> addCoach(@PathVariable @Valid Long clubId, @PathVariable @Valid Long coachId) {
+        return new ResponseEntity<>(clubService.addCoach(clubId, coachId), HttpStatus.CREATED);
+    }
 }
