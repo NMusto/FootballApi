@@ -2,7 +2,7 @@ package com.football.controllers;
 
 import com.football.dtos.inDTO.CoachInDTO;
 import com.football.dtos.outDTO.CoachOutDTO;
-import com.football.projections.ICoachClubProjection;
+import com.football.projections.ICoachProjection;
 import com.football.services.CoachService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -27,17 +27,17 @@ public class CoachController {
     }
 
     @GetMapping("/findcoach/{coachId}")
-    public ResponseEntity<ICoachClubProjection> findCoachById(@PathVariable @Valid Long coachId) {
+    public ResponseEntity<ICoachProjection> findCoachById(@PathVariable @Valid Long coachId) {
         return new ResponseEntity<>(coachService.findCoachById(coachId), HttpStatus.OK);
     }
 
     @GetMapping("/findall")
-    public ResponseEntity<List<ICoachClubProjection>> findAllCoaches() {
+    public ResponseEntity<List<ICoachProjection>> findAllCoaches() {
         return new ResponseEntity<>(coachService.findAllCoaches(), HttpStatus.OK);
     }
 
     @PutMapping("/update/{coachId}")
-    public ResponseEntity<ICoachClubProjection> updataCoach(@PathVariable @Valid Long coachId, @RequestBody @Valid CoachInDTO coachInDTO) {
+    public ResponseEntity<ICoachProjection> updataCoach(@PathVariable @Valid Long coachId, @RequestBody @Valid CoachInDTO coachInDTO) {
         return new ResponseEntity<>(coachService.updateCoachById(coachId, coachInDTO), HttpStatus.OK);
     }
 }

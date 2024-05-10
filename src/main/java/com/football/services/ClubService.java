@@ -7,9 +7,8 @@ import com.football.entities.Coach;
 import com.football.exceptions.InfoExceptions;
 import com.football.mappers.ClubInDTOToClub;
 import com.football.mappers.ClubToClubOutDTO;
-import com.football.projections.IClubCoachProjection;
+import com.football.projections.IClubProjection;
 import com.football.repositories.ClubRepository;
-import com.football.repositories.CoachRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -21,16 +20,16 @@ import java.util.Optional;
 public class ClubService {
 
     private final ClubRepository clubRepository;
-    private final CoachRepository coachRepository;
+    private final CoachService coachService;
     private final ClubInDTOToClub clubInDTOToClub;
     private final ClubToClubOutDTO clubToClubOutDTO;
 
-    public ClubService(ClubRepository clubRepository, CoachRepository coachRepository,
+    public ClubService(ClubRepository clubRepository, CoachService coachService,
                        ClubInDTOToClub clubInDTOToClub, ClubToClubOutDTO clubToClubOutDTO) {
         this.clubRepository = clubRepository;
         this.clubInDTOToClub = clubInDTOToClub;
         this.clubToClubOutDTO = clubToClubOutDTO;
-        this.coachRepository = coachRepository;
+        this.coachService = coachService;
     }
 
     public ClubOutDTO createClub(ClubInDTO clubInDTO) {
@@ -40,67 +39,73 @@ public class ClubService {
         return clubOutDTO;
     }
 
-    public IClubCoachProjection findClubById(Long clubId) {
-        Optional<IClubCoachProjection> optionalClub = clubRepository.findClubById(clubId);
-        if(optionalClub.isEmpty()) {
-            throw new InfoExceptions("Id Inexistente", HttpStatus.NOT_FOUND);
-        }
-        return optionalClub.get();
+    public IClubProjection findClubById(Long clubId) {
+        IClubProjection iClubProjection = this.findClubWithProjection(clubId);
+        return iClubProjection;
     }
 
-    // No es un endpoint, devuelve un Club para manejo interno de la app
-    public Club findById(Long clubId) {
-        Optional<Club> optionalClub = clubRepository.findById(clubId);
-        if(optionalClub.isEmpty()) {
-            return null;
-        }
-        return optionalClub.get();
-    }
-
-    public Page<IClubCoachProjection> findAllClubs(Pageable pageable) {
-        Page<IClubCoachProjection> clubs = clubRepository.findAllProjetedBy(pageable);
+    public Page<IClubProjection> findAllClubs(Pageable pageable) {
+        Page<IClubProjection> clubs = clubRepository.findAllProjetedBy(pageable);
         if (clubs.isEmpty()) {
-            throw new InfoExceptions("No existen clubs registrados actualmente", HttpStatus.NOT_FOUND);
+            throw new InfoExceptions( "There are currently no registered clubs.", HttpStatus.NOT_FOUND);
         }
         return clubs;
     }
 
-    public IClubCoachProjection updateClubById(Long clubId, ClubInDTO clubInDTO) {
-        Optional<Club> optionalClub = clubRepository.findById(clubId);
-        if (optionalClub.isEmpty()) {
-            throw new InfoExceptions("Id inexistente!", HttpStatus.NOT_FOUND);
-        }
-        Club club = optionalClub.get();
+    public IClubProjection updateClubById(Long clubId, ClubInDTO clubInDTO) {
+        Club club = this.findClub(clubId);
+
         club.setName(clubInDTO.getName());
         club.setAssociationNumber(clubInDTO.getAssociationNumber());
-
         clubRepository.save(club);
-        Optional<IClubCoachProjection> clubOptional = clubRepository.findClubById(clubId);
-        return clubOptional.get();
+
+        IClubProjection iClubProjection = this.findClubWithProjection(clubId);
+        return iClubProjection;
     }
 
-    public String updateCoach(Long clubId, Long coachId) {
-        Optional<Club> optionalClub = clubRepository.findById(clubId);
-        if (optionalClub.isEmpty()) {
-            throw new InfoExceptions("Club inexistente!", HttpStatus.NOT_FOUND);
-        }
-        Club club = optionalClub.get();
+    public String addCoach(Long clubId, Long coachId) {
+
+        Club club = this.findClub(clubId);
 
         if (coachId == null) {
             club.setCoach(null);
         }
         else {
-            Optional<Coach> optionalCoach = coachRepository.findById(coachId);
-            if (optionalCoach.isEmpty()) {
-                throw new InfoExceptions("Coach inexistente!", HttpStatus.NOT_FOUND);
-            }
-            Coach coach = optionalCoach.get();
-
+            Coach coach = coachService.findCoach(coachId);
             club.setCoach(coach);
         }
         clubRepository.save(club);
-        return "Coach id: " + coachId + " agregado exitosamente al Club id: " + clubId;
+        return "Coach id: " + coachId + " successfully added to Club id: " + clubId;
     }
+
+
+
+    /*------------------------------------------------------------------------------------------------*/
+    /*                                    CLUB: UTIlS                                                 */
+    /*------------------------------------------------------------------------------------------------*/
+
+
+    // It is not an endpoint, it returns a Club Entity
+
+    public Club findClub (Long clubId) {
+        Optional<Club> optionalClub = clubRepository.findById(clubId);
+        if(optionalClub.isEmpty()) {
+            throw new InfoExceptions("Id does not exist.", HttpStatus.NOT_FOUND);
+        }
+        return optionalClub.get();
+    }
+
+    //finds and validates Club entity exists and returns IClubCoachProjection
+
+    public IClubProjection findClubWithProjection (Long clubId) {
+        Optional<IClubProjection> optionalClub = clubRepository.findClubById(clubId);
+        if(optionalClub.isEmpty()) {
+            throw new InfoExceptions("Id does not exist.", HttpStatus.NOT_FOUND);
+        }
+        return optionalClub.get();
+    }
+
+
 
 
 }

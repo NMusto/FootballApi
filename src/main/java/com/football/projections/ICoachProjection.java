@@ -1,6 +1,6 @@
 package com.football.projections;
 
-public interface ICoachClubProjection {
+public interface ICoachProjection {
 
     Long getId();
     String getName();

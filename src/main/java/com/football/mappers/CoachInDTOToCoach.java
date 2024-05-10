@@ -11,11 +11,6 @@ import java.util.Optional;
 @Component
 public class CoachInDTOToCoach implements IMapper<CoachInDTO, Coach> {
 
-    private ClubService clubService;
-
-    public CoachInDTOToCoach(ClubService clubService) {
-        this.clubService = clubService;
-    }
 
     @Override
     public Coach map(CoachInDTO coachInDTO) {

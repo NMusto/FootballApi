@@ -1,7 +1,7 @@
 package com.football.repositories;
 
 import com.football.entities.Coach;
-import com.football.projections.ICoachClubProjection;
+import com.football.projections.ICoachProjection;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -13,7 +13,7 @@ public interface CoachRepository extends JpaRepository<Coach, Long> {
 
     public Optional<Coach> findById(Long coachId);
 
-    public Optional<ICoachClubProjection> findCoachById(Long coachId);
+    public Optional<ICoachProjection> findCoachById(Long coachId);
 
-    public List<ICoachClubProjection> findAllProjectedBy();
+    public List<ICoachProjection> findAllProjectedBy();
 }

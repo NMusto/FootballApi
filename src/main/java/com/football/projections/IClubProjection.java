@@ -1,8 +1,6 @@
 package com.football.projections;
 
-import com.football.entities.Association;
-
-public interface IClubCoachProjection {
+public interface IClubProjection {
 
     Long getId();
     String getName();

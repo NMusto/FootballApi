@@ -33,7 +33,7 @@ public class HandlerExceptions {
 
     @ExceptionHandler(value = NoResourceFoundException.class)
     public ResponseEntity<ErrorResponse> handlerResourceFoundException(NoResourceFoundException ex) {
-        ErrorResponse errorResponse = new ErrorResponse("URL: inexistente", HttpStatus.NOT_FOUND);
+        ErrorResponse errorResponse = new ErrorResponse("Non-existent URL", HttpStatus.NOT_FOUND);
 
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }

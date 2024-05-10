@@ -1,15 +1,12 @@
 package com.football.services;
 
-import com.football.dtos.inDTO.ClubInDTO;
 import com.football.dtos.inDTO.CoachInDTO;
 import com.football.dtos.outDTO.CoachOutDTO;
-import com.football.entities.Club;
 import com.football.entities.Coach;
 import com.football.exceptions.InfoExceptions;
 import com.football.mappers.CoachInDTOToCoach;
 import com.football.mappers.CoachToCoachOutDTO;
-import com.football.projections.IClubCoachProjection;
-import com.football.projections.ICoachClubProjection;
+import com.football.projections.ICoachProjection;
 import com.football.repositories.CoachRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -38,45 +35,57 @@ public class CoachService {
         return coachOutDTO;
     }
 
-    public ICoachClubProjection findCoachById(Long coachId) {
-        Optional<ICoachClubProjection> optionalCoach = coachRepository.findCoachById(coachId);
-        if (optionalCoach.isEmpty()) {
-            throw new InfoExceptions("Id inexistente!", HttpStatus.NOT_FOUND);
-        }
-        return optionalCoach.get();
+    public ICoachProjection findCoachById(Long coachId) {
+        ICoachProjection iCoachProjection = this.findCoachWithProjection(coachId);
+        return iCoachProjection;
     }
 
-    // No es un endpoint, devuelve un Coach para manejo interno de la app
-    public Coach findById(Long coachId) {
-        Optional<Coach> optionalCoach = coachRepository.findById(coachId);
-        if (optionalCoach.isEmpty()) {
-            return null;
-        }
-        return optionalCoach.get();
-    }
-
-    public List<ICoachClubProjection> findAllCoaches() {
-        List<ICoachClubProjection> coaches = coachRepository.findAllProjectedBy();
+    public List<ICoachProjection> findAllCoaches() {
+        List<ICoachProjection> coaches = coachRepository.findAllProjectedBy();
         if (coaches.isEmpty()) {
-            throw new InfoExceptions("No existen coaches registrados actualmente", HttpStatus.NOT_FOUND);
+            throw new InfoExceptions("There are currently no registered coaches.", HttpStatus.NOT_FOUND);
         }
         return coaches;
     }
 
-    public ICoachClubProjection updateCoachById(Long coachId, CoachInDTO coachInDTO) {
-        Optional<Coach> optionalCoach = coachRepository.findById(coachId);
-        if (optionalCoach.isEmpty()) {
-            throw new InfoExceptions("Id inexistente!", HttpStatus.NOT_FOUND);
-        }
-        Coach coach = optionalCoach.get();
+    public ICoachProjection updateCoachById(Long coachId, CoachInDTO coachInDTO) {
+        Coach coach = this.findCoach(coachId);
+
         coach.setName(coachInDTO.getName());
         coach.setLastName(coachInDTO.getLastName());
         coach.setNationality(coachInDTO.getNationality());
         coach.setAge(coachInDTO.getAge());
-
         coachRepository.save(coach);
-        Optional<ICoachClubProjection> coachOptional = coachRepository.findCoachById(coachId);
-        return coachOptional.get();
+
+        ICoachProjection iCoachProjection = this.findCoachWithProjection(coachId);
+        return iCoachProjection;
+    }
+
+
+
+    /*------------------------------------------------------------------------------------------------*/
+    /*                                  COACH: UTIlS                                                  */
+    /*------------------------------------------------------------------------------------------------*/
+
+
+    // It is not an endpoint, it returns a Coach Entity
+
+    public Coach findCoach(Long coachId) {
+        Optional<Coach> optionalCoach = coachRepository.findById(coachId);
+        if (optionalCoach.isEmpty()) {
+            throw new InfoExceptions("Id does not exist.", HttpStatus.NOT_FOUND);
+        }
+        return optionalCoach.get();
+    }
+
+    //finds and validates Coach entity exists and returns ICoachClubProjection
+
+    public ICoachProjection findCoachWithProjection (Long clubId) {
+        Optional<ICoachProjection> optionalCoach = coachRepository.findCoachById(clubId);
+        if(optionalCoach.isEmpty()) {
+            throw new InfoExceptions("Id does not exist.", HttpStatus.NOT_FOUND);
+        }
+        return optionalCoach.get();
     }
 
 }
