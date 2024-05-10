@@ -66,11 +66,11 @@ public class ClubService {
     }
 
     public IClubCoachProjection updateClubById(Long clubId, ClubInDTO clubInDTO) {
-        Optional<Club> optionalclub = clubRepository.findById(clubId);
-        if (optionalclub.isEmpty()) {
+        Optional<Club> optionalClub = clubRepository.findById(clubId);
+        if (optionalClub.isEmpty()) {
             throw new InfoExceptions("Id inexistente!", HttpStatus.NOT_FOUND);
         }
-        Club club = optionalclub.get();
+        Club club = optionalClub.get();
         club.setName(clubInDTO.getName());
         club.setAssociationNumber(clubInDTO.getAssociationNumber());
 

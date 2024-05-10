@@ -1,11 +1,14 @@
 package com.football.services;
 
+import com.football.dtos.inDTO.ClubInDTO;
 import com.football.dtos.inDTO.CoachInDTO;
 import com.football.dtos.outDTO.CoachOutDTO;
+import com.football.entities.Club;
 import com.football.entities.Coach;
 import com.football.exceptions.InfoExceptions;
 import com.football.mappers.CoachInDTOToCoach;
 import com.football.mappers.CoachToCoachOutDTO;
+import com.football.projections.IClubCoachProjection;
 import com.football.projections.ICoachClubProjection;
 import com.football.repositories.CoachRepository;
 import org.springframework.http.HttpStatus;
@@ -58,6 +61,22 @@ public class CoachService {
             throw new InfoExceptions("No existen coaches registrados actualmente", HttpStatus.NOT_FOUND);
         }
         return coaches;
+    }
+
+    public ICoachClubProjection updateCoachById(Long coachId, CoachInDTO coachInDTO) {
+        Optional<Coach> optionalCoach = coachRepository.findById(coachId);
+        if (optionalCoach.isEmpty()) {
+            throw new InfoExceptions("Id inexistente!", HttpStatus.NOT_FOUND);
+        }
+        Coach coach = optionalCoach.get();
+        coach.setName(coachInDTO.getName());
+        coach.setLastName(coachInDTO.getLastName());
+        coach.setNationality(coachInDTO.getNationality());
+        coach.setAge(coachInDTO.getAge());
+
+        coachRepository.save(coach);
+        Optional<ICoachClubProjection> coachOptional = coachRepository.findCoachById(coachId);
+        return coachOptional.get();
     }
 
 }

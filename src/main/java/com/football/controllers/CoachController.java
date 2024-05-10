@@ -35,4 +35,9 @@ public class CoachController {
     public ResponseEntity<List<ICoachClubProjection>> findAllCoaches() {
         return new ResponseEntity<>(coachService.findAllCoaches(), HttpStatus.OK);
     }
+
+    @PutMapping("/update/{coachId}")
+    public ResponseEntity<ICoachClubProjection> updataCoach(@PathVariable @Valid Long coachId, @RequestBody @Valid CoachInDTO coachInDTO) {
+        return new ResponseEntity<>(coachService.updateCoachById(coachId, coachInDTO), HttpStatus.OK);
+    }
 }
