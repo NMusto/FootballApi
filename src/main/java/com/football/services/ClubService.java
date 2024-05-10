@@ -78,6 +78,12 @@ public class ClubService {
         return "Coach id: " + coachId + " successfully added to Club id: " + clubId;
     }
 
+    public String deleteClubById(Long clubId) {
+        this.findClub(clubId);
+        clubRepository.deleteById(clubId);
+        return "Club id: " + clubId + " was successfully deleted.";
+    }
+
 
 
     /*------------------------------------------------------------------------------------------------*/

@@ -49,4 +49,9 @@ public class ClubController {
     public ResponseEntity<String> addCoach(@PathVariable @Valid Long clubId, @RequestParam(required = false) Long coachId) {
         return new ResponseEntity<>(clubService.addCoach(clubId, coachId), HttpStatus.CREATED);
     }
+
+    @DeleteMapping("/delete/{clubId}")
+    public ResponseEntity<String> deleteClubById(@PathVariable @Valid Long clubId) {
+        return new ResponseEntity<>(clubService.deleteClubById(clubId), HttpStatus.OK);
+    }
 }
