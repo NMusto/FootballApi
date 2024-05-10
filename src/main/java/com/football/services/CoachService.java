@@ -2,11 +2,13 @@ package com.football.services;
 
 import com.football.dtos.inDTO.CoachInDTO;
 import com.football.dtos.outDTO.CoachOutDTO;
+import com.football.entities.Club;
 import com.football.entities.Coach;
 import com.football.exceptions.InfoExceptions;
 import com.football.mappers.CoachInDTOToCoach;
 import com.football.mappers.CoachToCoachOutDTO;
 import com.football.projections.ICoachProjection;
+import com.football.repositories.ClubRepository;
 import com.football.repositories.CoachRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -18,14 +20,17 @@ import java.util.Optional;
 public class CoachService {
 
     private final CoachRepository coachRepository;
+    private final ClubRepository clubRepository;
     private final CoachInDTOToCoach coachInDTOToCoach;
     private final CoachToCoachOutDTO coachToCoachOutDTO;
 
 
-    public CoachService(CoachRepository coachRepository, CoachInDTOToCoach coachInDTOToCoach, CoachToCoachOutDTO coachToCoachOutDTO) {
+    public CoachService(CoachRepository coachRepository, ClubRepository clubRepository,
+                        CoachInDTOToCoach coachInDTOToCoach, CoachToCoachOutDTO coachToCoachOutDTO) {
         this.coachRepository = coachRepository;
         this.coachInDTOToCoach = coachInDTOToCoach;
         this.coachToCoachOutDTO = coachToCoachOutDTO;
+        this.clubRepository = clubRepository;
     }
 
     public CoachOutDTO createCoach(CoachInDTO coachInDTO) {
@@ -59,6 +64,16 @@ public class CoachService {
 
         ICoachProjection iCoachProjection = this.findCoachWithProjection(coachId);
         return iCoachProjection;
+    }
+
+    public String deleteCoachById(Long coachId) {
+        Coach coach = this.findCoach(coachId);
+        Club club = coach.getClub();
+        club.setCoach(null);
+        this.clubRepository.save(club);
+
+        coachRepository.deleteById(coachId);
+        return "Coach id: " + coachId + " was successfully deleted.";
     }
 
 

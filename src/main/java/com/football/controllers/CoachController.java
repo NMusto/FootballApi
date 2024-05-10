@@ -40,4 +40,9 @@ public class CoachController {
     public ResponseEntity<ICoachProjection> updataCoach(@PathVariable @Valid Long coachId, @RequestBody @Valid CoachInDTO coachInDTO) {
         return new ResponseEntity<>(coachService.updateCoachById(coachId, coachInDTO), HttpStatus.OK);
     }
+
+    @DeleteMapping("/delete/{coachId}")
+    public ResponseEntity<String> deleteCoachById(@PathVariable @Valid Long coachId) {
+        return new ResponseEntity<>(coachService.deleteCoachById(coachId), HttpStatus.OK);
+    }
 }
