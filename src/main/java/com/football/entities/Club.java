@@ -29,7 +29,7 @@ public class Club {
     @OneToMany(targetEntity = Player.class, fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, mappedBy = "club")
     private List<Player> players;
 
-    @ManyToOne(targetEntity = Association.class, cascade = CascadeType.PERSIST)
+    @ManyToOne(targetEntity = Association.class)
     private Association association;
 
     @ManyToMany(targetEntity = Competition.class, fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
