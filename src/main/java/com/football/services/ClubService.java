@@ -101,7 +101,7 @@ public class ClubService {
         return optionalClub.get();
     }
 
-    //finds and validates Club entity exists and returns IClubCoachProjection
+    //finds and validates Club entity exists and returns IClubProjection
 
     public IClubProjection findClubWithProjection (Long clubId) {
         Optional<IClubProjection> optionalClub = clubRepository.findClubById(clubId);

@@ -93,7 +93,7 @@ public class CoachService {
         return optionalCoach.get();
     }
 
-    //finds and validates Coach entity exists and returns ICoachClubProjection
+    //finds and validates Coach entity exists and returns ICoachProjection
 
     public ICoachProjection findCoachWithProjection (Long clubId) {
         Optional<ICoachProjection> optionalCoach = coachRepository.findCoachById(clubId);
