@@ -3,6 +3,7 @@ package com.football.services;
 import com.football.dtos.inDTO.AssociationInDTO;
 import com.football.dtos.outDTO.AssociationOutDTO;
 import com.football.entities.Association;
+import com.football.entities.Club;
 import com.football.exceptions.InfoExceptions;
 import com.football.mappers.AssociationInDTOToAssociation;
 import com.football.mappers.AssociationToAssociationOutDTO;
@@ -51,9 +52,23 @@ public class AssociationService {
 
 
 
+
+
     /*------------------------------------------------------------------------------------------------*/
     /*                                   ASSOCIATION: UTIlS                                           */
     /*------------------------------------------------------------------------------------------------*/
+
+
+
+    // It is not an endpoint, it returns an Association Entity
+
+    public Association findAssociation (Long associationId) {
+        Optional<Association> optionalAssociation = associationRepository.findById(associationId);
+        if(optionalAssociation.isEmpty()) {
+            throw new InfoExceptions("Id does not exist.", HttpStatus.NOT_FOUND);
+        }
+        return optionalAssociation.get();
+    }
 
 
     //finds and validates Association entity exists and returns IAssociationProjection

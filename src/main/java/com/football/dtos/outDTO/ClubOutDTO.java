@@ -13,5 +13,5 @@ public class ClubOutDTO {
     private Long id;
     private String name;
     private boolean debt;
-    private Integer associationNumber;
+    private Integer associateNumber;
 }

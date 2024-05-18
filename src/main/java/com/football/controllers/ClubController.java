@@ -50,6 +50,11 @@ public class ClubController {
         return new ResponseEntity<>(clubService.addCoach(clubId, coachId), HttpStatus.CREATED);
     }
 
+    @PutMapping("/addassociation/{clubId}")
+    public ResponseEntity<String> addAssociation (@PathVariable @Valid Long clubId, @RequestParam(required = false) Long associationId) {
+        return new ResponseEntity<>(clubService.addAssociation(clubId, associationId), HttpStatus.CREATED);
+    }
+
     @DeleteMapping("/delete/{clubId}")
     public ResponseEntity<String> deleteClubById(@PathVariable @Valid Long clubId) {
         return new ResponseEntity<>(clubService.deleteClubById(clubId), HttpStatus.OK);

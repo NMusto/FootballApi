@@ -17,6 +17,6 @@ public class ClubInDTO {
     private String name;
 
     @NotNull @Positive
-    private Integer associationNumber;
+    private Integer associateNumber;
 
 }

@@ -40,4 +40,5 @@ public class AssociationController {
         return new ResponseEntity<>(associations, HttpStatus.OK);
     }
 
+
 }

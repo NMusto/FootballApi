@@ -20,7 +20,7 @@ public class Club {
     private Long id;
     private String name;
     private boolean debt;
-    private Integer associationNumber;
+    private Integer associateNumber;
 
     @OneToOne(targetEntity = Coach.class)
     @JoinColumn(name = "coach_id")

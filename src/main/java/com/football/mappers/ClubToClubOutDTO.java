@@ -13,7 +13,7 @@ public class ClubToClubOutDTO implements IMapper<Club, ClubOutDTO> {
         clubOutDTO.setId(club.getId());
         clubOutDTO.setName(club.getName());
         clubOutDTO.setDebt(club.isDebt());
-        clubOutDTO.setAssociationNumber(club.getAssociationNumber());
+        clubOutDTO.setAssociateNumber(club.getAssociateNumber());
 
         return clubOutDTO;
     }

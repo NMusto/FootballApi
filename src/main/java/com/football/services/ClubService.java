@@ -2,6 +2,7 @@ package com.football.services;
 
 import com.football.dtos.inDTO.ClubInDTO;
 import com.football.dtos.outDTO.ClubOutDTO;
+import com.football.entities.Association;
 import com.football.entities.Club;
 import com.football.entities.Coach;
 import com.football.exceptions.InfoExceptions;
@@ -23,13 +24,16 @@ public class ClubService {
     private final CoachService coachService;
     private final ClubInDTOToClub clubInDTOToClub;
     private final ClubToClubOutDTO clubToClubOutDTO;
+    private final AssociationService associationService;
 
     public ClubService(ClubRepository clubRepository, CoachService coachService,
-                       ClubInDTOToClub clubInDTOToClub, ClubToClubOutDTO clubToClubOutDTO) {
+                       ClubInDTOToClub clubInDTOToClub, ClubToClubOutDTO clubToClubOutDTO,
+                       AssociationService associationService) {
         this.clubRepository = clubRepository;
         this.clubInDTOToClub = clubInDTOToClub;
         this.clubToClubOutDTO = clubToClubOutDTO;
         this.coachService = coachService;
+        this.associationService = associationService;
     }
 
     public ClubOutDTO createClub(ClubInDTO clubInDTO) {
@@ -56,7 +60,7 @@ public class ClubService {
         Club club = this.findClub(clubId);
 
         club.setName(clubInDTO.getName());
-        club.setAssociationNumber(clubInDTO.getAssociationNumber());
+        club.setAssociateNumber(clubInDTO.getAssociateNumber());
         clubRepository.save(club);
 
         IClubProjection iClubProjection = this.findClubWithProjection(clubId);
@@ -76,6 +80,21 @@ public class ClubService {
         }
         clubRepository.save(club);
         return "Coach id: " + coachId + " successfully added to Club id: " + clubId;
+    }
+
+    public String addAssociation (Long clubId, Long associationId) {
+
+        Club club = this.findClub(clubId);
+
+        if (associationId == null) {
+            club.setAssociation(null);
+        }
+        else {
+            Association association = associationService.findAssociation(associationId);
+            club.setAssociation(association);
+        }
+        clubRepository.save(club);
+        return "Association id: " + associationId + " successfully added to Club id: " + clubId;
     }
 
     public String deleteClubById(Long clubId) {

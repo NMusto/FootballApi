@@ -12,7 +12,7 @@ public class ClubInDTOToClub implements IMapper<ClubInDTO, Club> {
         Club club = Club.builder()
                 .name(clubInDTO.getName())
                 .debt(false)
-                .associationNumber(clubInDTO.getAssociationNumber())
+                .associateNumber(clubInDTO.getAssociateNumber())
                 .build();
         return club;
     }
