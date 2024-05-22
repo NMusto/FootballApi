@@ -27,17 +27,17 @@ public class CoachController {
     }
 
     @GetMapping("/findcoach/{coachId}")
-    public ResponseEntity<ICoachProjection> findCoachById(@PathVariable @Valid Long coachId) {
+    public ResponseEntity<CoachOutDTO> findCoachById(@PathVariable @Valid Long coachId) {
         return new ResponseEntity<>(coachService.findCoachById(coachId), HttpStatus.OK);
     }
 
     @GetMapping("/findall")
-    public ResponseEntity<List<ICoachProjection>> findAllCoaches() {
+    public ResponseEntity<List<CoachOutDTO>> findAllCoaches() {
         return new ResponseEntity<>(coachService.findAllCoaches(), HttpStatus.OK);
     }
 
     @PutMapping("/update/{coachId}")
-    public ResponseEntity<ICoachProjection> updataCoach(@PathVariable @Valid Long coachId, @RequestBody @Valid CoachInDTO coachInDTO) {
+    public ResponseEntity<CoachOutDTO> updataCoach(@PathVariable @Valid Long coachId, @RequestBody @Valid CoachInDTO coachInDTO) {
         return new ResponseEntity<>(coachService.updateCoachById(coachId, coachInDTO), HttpStatus.OK);
     }
 

@@ -12,23 +12,23 @@ import java.util.stream.Collectors;
 
 @Component
 public class AssociationProjectionPageToAssociationOutDTOPage implements IMapper<Page<IAssociationProjection>, Page<AssociationOutDTO>> {
+
+    private final AssociationProjectionToAssociationOutDTO associationProjectionToAssociationOutDTO;
+
+    public AssociationProjectionPageToAssociationOutDTOPage(AssociationProjectionToAssociationOutDTO associationProjectionToAssociationOutDTO) {
+        this.associationProjectionToAssociationOutDTO = associationProjectionToAssociationOutDTO;
+    }
+
+
     @Override
     public Page<AssociationOutDTO> map(Page<IAssociationProjection> associationProjections) {
         //Convert
         List<AssociationOutDTO> associationOutDTOList = associationProjections.stream()
-                .map(associationProjection -> convertAssociationProjectionToOutDTO(associationProjection))
+                .map(associationProjection -> associationProjectionToAssociationOutDTO.map(associationProjection))
                 .collect(Collectors.toList());
 
         return new PageImpl<>(associationOutDTOList,associationProjections.getPageable(), associationProjections.getTotalElements());
     }
 
-    public AssociationOutDTO convertAssociationProjectionToOutDTO(IAssociationProjection associationProjection) {
-        AssociationOutDTO associationOutDTO = new AssociationOutDTO();
 
-        associationOutDTO.setId(associationProjection.getId());
-        associationOutDTO.setName(associationProjection.getName());
-        associationOutDTO.setPresident(associationProjection.getPresident());
-
-        return associationOutDTO;
-    }
 }

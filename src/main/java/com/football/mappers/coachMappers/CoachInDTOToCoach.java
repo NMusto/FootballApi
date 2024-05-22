@@ -1,8 +1,9 @@
-package com.football.mappers;
+package com.football.mappers.coachMappers;
 
 import com.football.dtos.inDTO.CoachInDTO;
 import com.football.entities.Club;
 import com.football.entities.Coach;
+import com.football.mappers.IMapper;
 import com.football.services.ClubService;
 import org.springframework.stereotype.Component;
 

@@ -5,8 +5,10 @@ import com.football.dtos.outDTO.CoachOutDTO;
 import com.football.entities.Club;
 import com.football.entities.Coach;
 import com.football.exceptions.InfoExceptions;
-import com.football.mappers.CoachInDTOToCoach;
-import com.football.mappers.CoachToCoachOutDTO;
+import com.football.mappers.coachMappers.CoachInDTOToCoach;
+import com.football.mappers.coachMappers.CoachProjectionListToCoachOutDTOList;
+import com.football.mappers.coachMappers.CoachProjectionToCoachOutDTO;
+import com.football.mappers.coachMappers.CoachToCoachOutDTO;
 import com.football.projections.ICoachProjection;
 import com.football.repositories.ClubRepository;
 import com.football.repositories.CoachRepository;
@@ -23,14 +25,20 @@ public class CoachService {
     private final ClubRepository clubRepository;
     private final CoachInDTOToCoach coachInDTOToCoach;
     private final CoachToCoachOutDTO coachToCoachOutDTO;
+    private final CoachProjectionToCoachOutDTO coachProjectionToCoachOutDTO;
+    private final CoachProjectionListToCoachOutDTOList coachProjectionListToCoachOutDTOList;
 
 
     public CoachService(CoachRepository coachRepository, ClubRepository clubRepository,
-                        CoachInDTOToCoach coachInDTOToCoach, CoachToCoachOutDTO coachToCoachOutDTO) {
+                        CoachInDTOToCoach coachInDTOToCoach, CoachToCoachOutDTO coachToCoachOutDTO,
+                        CoachProjectionToCoachOutDTO coachProjectionToCoachOutDTO,
+                        CoachProjectionListToCoachOutDTOList coachProjectionListToCoachOutDTOList) {
         this.coachRepository = coachRepository;
         this.coachInDTOToCoach = coachInDTOToCoach;
         this.coachToCoachOutDTO = coachToCoachOutDTO;
         this.clubRepository = clubRepository;
+        this.coachProjectionToCoachOutDTO = coachProjectionToCoachOutDTO;
+        this.coachProjectionListToCoachOutDTOList = coachProjectionListToCoachOutDTOList;
     }
 
     public CoachOutDTO createCoach(CoachInDTO coachInDTO) {
@@ -40,20 +48,22 @@ public class CoachService {
         return coachOutDTO;
     }
 
-    public ICoachProjection findCoachById(Long coachId) {
+    public CoachOutDTO findCoachById(Long coachId) {
         ICoachProjection iCoachProjection = this.findCoachWithProjection(coachId);
-        return iCoachProjection;
+        CoachOutDTO coachOutDTO = coachProjectionToCoachOutDTO.map(iCoachProjection);
+        return coachOutDTO;
     }
 
-    public List<ICoachProjection> findAllCoaches() {
-        List<ICoachProjection> coaches = coachRepository.findAllProjectedBy();
-        if (coaches.isEmpty()) {
+    public List<CoachOutDTO> findAllCoaches() {
+        List<ICoachProjection> coachProjectionList = coachRepository.findAllProjectedBy();
+        if (coachProjectionList.isEmpty()) {
             throw new InfoExceptions("There are currently no registered coaches.", HttpStatus.NOT_FOUND);
         }
-        return coaches;
+        List<CoachOutDTO> coachOutDTOList = coachProjectionListToCoachOutDTOList.map(coachProjectionList);
+        return coachOutDTOList;
     }
 
-    public ICoachProjection updateCoachById(Long coachId, CoachInDTO coachInDTO) {
+    public CoachOutDTO updateCoachById(Long coachId, CoachInDTO coachInDTO) {
         Coach coach = this.findCoach(coachId);
 
         coach.setName(coachInDTO.getName());
@@ -63,7 +73,8 @@ public class CoachService {
         coachRepository.save(coach);
 
         ICoachProjection iCoachProjection = this.findCoachWithProjection(coachId);
-        return iCoachProjection;
+        CoachOutDTO coachOutDTO = coachProjectionToCoachOutDTO.map(iCoachProjection);
+        return coachOutDTO;
     }
 
     public String deleteCoachById(Long coachId) {
