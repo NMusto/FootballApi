@@ -1,12 +1,13 @@
 package com.football.services;
 
 import com.football.dtos.inDTO.AssociationInDTO;
-import com.football.dtos.outDTO.AssociationOutDTO;
+import com.football.dtos.outDTO.associationOutDTO.AssociationOutDTO;
 import com.football.entities.Association;
-import com.football.entities.Club;
 import com.football.exceptions.InfoExceptions;
-import com.football.mappers.AssociationInDTOToAssociation;
-import com.football.mappers.AssociationToAssociationOutDTO;
+import com.football.mappers.associationMappers.AssociationInDTOToAssociation;
+import com.football.mappers.associationMappers.AssociationToAssociationOutDTO;
+import com.football.mappers.associationMappers.AssociationProjectionPageToAssociationOutDTOPage;
+import com.football.mappers.associationMappers.AssociationProjectionToAssociationOutDTO;
 import com.football.projections.IAssociationProjection;
 import com.football.repositories.AssociationRepository;
 import org.springframework.data.domain.Page;
@@ -22,12 +23,18 @@ public class AssociationService {
     private final AssociationRepository associationRepository;
     private final AssociationInDTOToAssociation associationInDTOToAssociation;
     private final AssociationToAssociationOutDTO associationToAssociationOutDTO;
+    private final AssociationProjectionToAssociationOutDTO associationProjectionToAssociationOutDTO;
+    private final AssociationProjectionPageToAssociationOutDTOPage AssociationProjectionPageToAssociationOutDTOPage;
 
     public AssociationService(AssociationRepository associationRepository, AssociationToAssociationOutDTO associationToAssociationOutDTO,
-                              AssociationInDTOToAssociation associationInDTOToAssociation) {
+                              AssociationInDTOToAssociation associationInDTOToAssociation,
+                              AssociationProjectionToAssociationOutDTO associationProjectionToAssociationOutDTO,
+                              AssociationProjectionPageToAssociationOutDTOPage AssociationProjectionPageToAssociationOutDTOPage) {
         this.associationRepository = associationRepository;
         this.associationInDTOToAssociation = associationInDTOToAssociation;
         this.associationToAssociationOutDTO = associationToAssociationOutDTO;
+        this.associationProjectionToAssociationOutDTO = associationProjectionToAssociationOutDTO;
+        this.AssociationProjectionPageToAssociationOutDTOPage = AssociationProjectionPageToAssociationOutDTOPage;
     }
 
     public AssociationOutDTO createAssociation(AssociationInDTO associationInDTO) {
@@ -37,20 +44,33 @@ public class AssociationService {
         return associationOutDTO;
     }
 
-    public IAssociationProjection findAssociationById(Long associationId) {
-        IAssociationProjection iAssociationProjection = this.findAssociationWithProjection(associationId);
-        return iAssociationProjection;
+    public AssociationOutDTO findAssociationById(Long associationId) {
+        IAssociationProjection associationProjection = this.findAssociationWithProjection(associationId);
+        AssociationOutDTO associationOutDTO = associationProjectionToAssociationOutDTO.map(associationProjection);
+        return associationOutDTO;
     }
 
-    public Page<IAssociationProjection> findAllAssociations(Pageable pageable) {
-        Page<IAssociationProjection> associations = associationRepository.findAllProjectedBy(pageable);
-        if (associations.isEmpty()) {
+    public Page<AssociationOutDTO> findAllAssociations(Pageable pageable) {
+        Page<IAssociationProjection> associationsProjection = associationRepository.findAllProjectedBy(pageable);
+        if (associationsProjection.isEmpty()) {
             throw new InfoExceptions( "There are currently no registered associations.", HttpStatus.NOT_FOUND);
         }
-        return associations;
+        return AssociationProjectionPageToAssociationOutDTOPage.map(associationsProjection);
     }
 
-
+//    public AssociationClubsOutDTO findAllClubs(Long associationId) {
+//        Association association = this.findAssociation(associationId);
+//
+//        AssociationClubsOutDTO associationClubsOutDTO = new AssociationClubsOutDTO();
+//
+//        associationClubsOutDTO.setAssociationId(associationId);
+//        associationClubsOutDTO.setAssociationName(association.getName());
+//
+//        List<ClubsListOutDTO> clubs = associationRepository.findAllClubs(associationId);
+//        associationClubsOutDTO.setClubs(clubs);
+//
+//        return associationClubsOutDTO;
+//    }
 
 
 
@@ -71,14 +91,14 @@ public class AssociationService {
     }
 
 
-    //finds and validates Association entity exists and returns IAssociationProjection
+    //finds and validates Association entity exists and returns AssociationOutDTO
 
     public IAssociationProjection findAssociationWithProjection(Long associationId) {
-        Optional<IAssociationProjection> iAssociationProjection = associationRepository.findAssociationById(associationId);
-        if(iAssociationProjection.isEmpty()) {
+        Optional<IAssociationProjection> optionalAssociationProjection = associationRepository.findAssociationById(associationId);
+        if(optionalAssociationProjection.isEmpty()) {
             throw new InfoExceptions("Id does not exist.", HttpStatus.NOT_FOUND);
         }
-        return iAssociationProjection.get();
+        return optionalAssociationProjection.get();
     }
 
 }

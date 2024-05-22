@@ -7,9 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AssociationOutDTO {
+public class ClubsListOutDTO {
 
-    private Long id;
-    private String name;
-    private String president;
+    private Long clubId;
+    private String clubName;
 }

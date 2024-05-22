@@ -1,8 +1,7 @@
 package com.football.controllers;
 
 import com.football.dtos.inDTO.AssociationInDTO;
-import com.football.dtos.outDTO.AssociationOutDTO;
-import com.football.projections.IAssociationProjection;
+import com.football.dtos.outDTO.associationOutDTO.AssociationOutDTO;
 import com.football.services.AssociationService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -28,17 +27,21 @@ public class AssociationController {
     }
 
     @GetMapping("/findassociation/{associationId}")
-    public ResponseEntity<IAssociationProjection> findAssociationById(@PathVariable @Valid Long associationId) {
+    public ResponseEntity<AssociationOutDTO> findAssociationById(@PathVariable @Valid Long associationId) {
         return new ResponseEntity<>(associationService.findAssociationById(associationId),HttpStatus.OK);
     }
 
     @GetMapping("/findall")
-    public ResponseEntity<Page<IAssociationProjection>> findAllClubs(@RequestParam(defaultValue = "0") int page,
-                                                              @RequestParam(defaultValue = "10") int size,
-                                                              @RequestParam(defaultValue = "name") String name) {
-        Page<IAssociationProjection> associations = associationService.findAllAssociations(PageRequest.of(page, size, Sort.by(name).ascending()));
+    public ResponseEntity<Page<AssociationOutDTO>> findAllAssociations(@RequestParam(defaultValue = "0") int page,
+                                                                            @RequestParam(defaultValue = "10") int size,
+                                                                            @RequestParam(defaultValue = "name") String name) {
+        Page<AssociationOutDTO> associations = associationService.findAllAssociations(PageRequest.of(page, size, Sort.by(name).ascending()));
         return new ResponseEntity<>(associations, HttpStatus.OK);
     }
 
+//    @GetMapping("/findclubs/{associationId}")
+//    public ResponseEntity<?> findClubsByAssociationId(@PathVariable @Valid Long associationId) {
+//        return new ResponseEntity<>(associationService.findAllClubs(associationId), HttpStatus.OK);
+//    }
 
 }
