@@ -48,8 +48,13 @@ public class AssociationController {
     }
 
     @PutMapping("/update/{associationId}")
-    public ResponseEntity<AssociationOutDTO> updatAssociation(@PathVariable @Valid Long associationId, @RequestBody @Valid AssociationInDTO associationInDTO) {
+    public ResponseEntity<AssociationOutDTO> updatAssociation(@PathVariable Long associationId, @RequestBody @Valid AssociationInDTO associationInDTO) {
         return new ResponseEntity<>(associationService.updateAssociationById(associationId, associationInDTO), HttpStatus.OK);
+    }
+
+    @DeleteMapping("delete/{associationId}")
+    public ResponseEntity<String> deleteAssociationById(@PathVariable @Valid Long associationId) {
+        return new ResponseEntity<>(associationService.deleteAssociationById(associationId), HttpStatus.OK);
     }
 
 
