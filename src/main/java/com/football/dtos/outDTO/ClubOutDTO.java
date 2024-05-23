@@ -14,4 +14,11 @@ public class ClubOutDTO {
     private String name;
     private boolean debt;
     private Integer associateNumber;
+
+    private Long coachId;
+    private String coachName;
+    private String coachLastName;
+
+    private Long associationId;
+    private String associationName;
 }

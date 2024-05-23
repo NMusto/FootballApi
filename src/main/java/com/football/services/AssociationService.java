@@ -1,6 +1,8 @@
 package com.football.services;
 
 import com.football.dtos.inDTO.AssociationInDTO;
+import com.football.dtos.outDTO.ClubsListOutDTO;
+import com.football.dtos.outDTO.associationOutDTO.AssociationClubsOutDTO;
 import com.football.dtos.outDTO.associationOutDTO.AssociationOutDTO;
 import com.football.entities.Association;
 import com.football.exceptions.InfoExceptions;
@@ -9,13 +11,16 @@ import com.football.mappers.associationMappers.AssociationToAssociationOutDTO;
 import com.football.mappers.associationMappers.AssociationProjectionPageToAssociationOutDTOPage;
 import com.football.mappers.associationMappers.AssociationProjectionToAssociationOutDTO;
 import com.football.projections.IAssociationProjection;
+import com.football.projections.IClubsList;
 import com.football.repositories.AssociationRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class AssociationService {
@@ -58,19 +63,43 @@ public class AssociationService {
         return AssociationProjectionPageToAssociationOutDTOPage.map(associationsProjection);
     }
 
-//    public AssociationClubsOutDTO findAllClubs(Long associationId) {
-//        Association association = this.findAssociation(associationId);
-//
-//        AssociationClubsOutDTO associationClubsOutDTO = new AssociationClubsOutDTO();
-//
-//        associationClubsOutDTO.setAssociationId(associationId);
-//        associationClubsOutDTO.setAssociationName(association.getName());
-//
-//        List<ClubsListOutDTO> clubs = associationRepository.findAllClubs(associationId);
-//        associationClubsOutDTO.setClubs(clubs);
-//
-//        return associationClubsOutDTO;
-//    }
+    public AssociationClubsOutDTO findAllClubs(Long associationId) {
+        Association association = this.findAssociation(associationId);
+
+        AssociationClubsOutDTO associationClubsOutDTO = new AssociationClubsOutDTO();
+
+        associationClubsOutDTO.setAssociationId(associationId);
+        associationClubsOutDTO.setAssociationName(association.getName());
+
+        List<IClubsList> clubsProjections = associationRepository.findAllClubs(associationId);
+        List<ClubsListOutDTO> clubsListOutDTOS = clubsProjections.stream()
+                .map(clubProjection -> {
+                    ClubsListOutDTO clubsListOutDTO = new ClubsListOutDTO();
+                    clubsListOutDTO.setClubId(clubProjection.getClubId());
+                    clubsListOutDTO.setClubName(clubProjection.getClubName());
+                    return clubsListOutDTO;
+                })
+                .collect(Collectors.toList());
+
+        associationClubsOutDTO.setClubs(clubsListOutDTOS);
+
+        return associationClubsOutDTO;
+    }
+
+    public AssociationOutDTO updateAssociationById(Long associationId, AssociationInDTO associationInDTO) {
+        Association association = this.findAssociation(associationId);
+
+        association.setName(associationInDTO.getName());
+        association.setPresident(associationInDTO.getPresident());
+        associationRepository.save(association);
+
+        IAssociationProjection iAssociationProjection = this.findAssociationWithProjection(associationId);
+        AssociationOutDTO associationOutDTO = associationProjectionToAssociationOutDTO.map(iAssociationProjection);
+        return associationOutDTO;
+    }
+
+
+
 
 
 

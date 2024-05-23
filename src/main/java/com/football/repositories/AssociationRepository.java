@@ -1,8 +1,8 @@
 package com.football.repositories;
 
-import com.football.dtos.outDTO.ClubsListOutDTO;
 import com.football.entities.Association;
 import com.football.projections.IAssociationProjection;
+import com.football.projections.IClubsList;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -27,5 +27,5 @@ public interface AssociationRepository extends JpaRepository<Association, Long> 
     @Query(value = "SELECT c.id AS clubId, c.name AS clubName " +
             "FROM club c " +
             "WHERE c.association_id = :associationId", nativeQuery = true)
-    public List<ClubsListOutDTO> findAllClubs(@Param("associationId") Long associationId);
+    public List<IClubsList> findAllClubs(@Param("associationId") Long associationId);
 }

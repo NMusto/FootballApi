@@ -37,7 +37,7 @@ public class CoachController {
     }
 
     @PutMapping("/update/{coachId}")
-    public ResponseEntity<CoachOutDTO> updataCoach(@PathVariable @Valid Long coachId, @RequestBody @Valid CoachInDTO coachInDTO) {
+    public ResponseEntity<CoachOutDTO> updateCoach(@PathVariable @Valid Long coachId, @RequestBody @Valid CoachInDTO coachInDTO) {
         return new ResponseEntity<>(coachService.updateCoachById(coachId, coachInDTO), HttpStatus.OK);
     }
 

@@ -8,6 +8,8 @@ import com.football.entities.Coach;
 import com.football.exceptions.InfoExceptions;
 import com.football.mappers.ClubInDTOToClub;
 import com.football.mappers.ClubToClubOutDTO;
+import com.football.mappers.clubMappers.ClubProjectionPageToClubOutDTOPage;
+import com.football.mappers.clubMappers.ClubProjectionToClubOutDTO;
 import com.football.projections.IClubProjection;
 import com.football.repositories.ClubRepository;
 import org.springframework.data.domain.Page;
@@ -25,15 +27,21 @@ public class ClubService {
     private final ClubInDTOToClub clubInDTOToClub;
     private final ClubToClubOutDTO clubToClubOutDTO;
     private final AssociationService associationService;
+    private final ClubProjectionToClubOutDTO clubProjectionToClubOutDTO;
+    private final ClubProjectionPageToClubOutDTOPage clubProjectionPageToClubOutDTOPage;
 
     public ClubService(ClubRepository clubRepository, CoachService coachService,
                        ClubInDTOToClub clubInDTOToClub, ClubToClubOutDTO clubToClubOutDTO,
-                       AssociationService associationService) {
+                       AssociationService associationService,
+                       ClubProjectionToClubOutDTO clubProjectionToClubOutDTO,
+                       ClubProjectionPageToClubOutDTOPage clubProjectionPageToClubOutDTOPage) {
         this.clubRepository = clubRepository;
         this.clubInDTOToClub = clubInDTOToClub;
         this.clubToClubOutDTO = clubToClubOutDTO;
         this.coachService = coachService;
         this.associationService = associationService;
+        this.clubProjectionToClubOutDTO = clubProjectionToClubOutDTO;
+        this.clubProjectionPageToClubOutDTOPage = clubProjectionPageToClubOutDTOPage;
     }
 
     public ClubOutDTO createClub(ClubInDTO clubInDTO) {
@@ -43,20 +51,21 @@ public class ClubService {
         return clubOutDTO;
     }
 
-    public IClubProjection findClubById(Long clubId) {
+    public ClubOutDTO findClubById(Long clubId) {
         IClubProjection iClubProjection = this.findClubWithProjection(clubId);
-        return iClubProjection;
+        ClubOutDTO clubOutDTO = clubProjectionToClubOutDTO.map(iClubProjection);
+        return clubOutDTO;
     }
 
-    public Page<IClubProjection> findAllClubs(Pageable pageable) {
-        Page<IClubProjection> clubs = clubRepository.findAllProjetedBy(pageable);
-        if (clubs.isEmpty()) {
+    public Page<ClubOutDTO> findAllClubs(Pageable pageable) {
+        Page<IClubProjection> clubsProjection = clubRepository.findAllProjetedBy(pageable);
+        if (clubsProjection.isEmpty()) {
             throw new InfoExceptions( "There are currently no registered clubs.", HttpStatus.NOT_FOUND);
         }
-        return clubs;
+        return clubProjectionPageToClubOutDTOPage.map(clubsProjection);
     }
 
-    public IClubProjection updateClubById(Long clubId, ClubInDTO clubInDTO) {
+    public ClubOutDTO updateClubById(Long clubId, ClubInDTO clubInDTO) {
         Club club = this.findClub(clubId);
 
         club.setName(clubInDTO.getName());
@@ -64,7 +73,8 @@ public class ClubService {
         clubRepository.save(club);
 
         IClubProjection iClubProjection = this.findClubWithProjection(clubId);
-        return iClubProjection;
+        ClubOutDTO clubOutDTO = clubProjectionToClubOutDTO.map(iClubProjection);
+        return clubOutDTO;
     }
 
     public String addCoach(Long clubId, Long coachId) {

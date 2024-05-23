@@ -28,20 +28,20 @@ public class ClubController {
     }
 
     @GetMapping("/findclub/{clubId}")
-    public ResponseEntity<IClubProjection> findClubById(@PathVariable @Valid Long clubId) {
+    public ResponseEntity<ClubOutDTO> findClubById(@PathVariable @Valid Long clubId) {
         return new ResponseEntity<>(clubService.findClubById(clubId), HttpStatus.OK);
     }
 
     @GetMapping("/findall")
-    public ResponseEntity<Page<IClubProjection>> findAllClubs(@RequestParam(defaultValue = "0") int page,
+    public ResponseEntity<Page<ClubOutDTO>> findAllClubs(@RequestParam(defaultValue = "0") int page,
                                                               @RequestParam(defaultValue = "10") int size,
                                                               @RequestParam(defaultValue = "name") String name) {
-        Page<IClubProjection> clubs = clubService.findAllClubs(PageRequest.of(page, size, Sort.by(name).ascending()));
+        Page<ClubOutDTO> clubs = clubService.findAllClubs(PageRequest.of(page, size, Sort.by(name).ascending()));
         return new ResponseEntity<>(clubs, HttpStatus.OK);
     }
 
     @PutMapping("/update/{clubId}")
-    public ResponseEntity<IClubProjection> updateClubById(@PathVariable @Valid Long clubId, @RequestBody @Valid ClubInDTO clubInDTO) {
+    public ResponseEntity<ClubOutDTO> updateClubById(@PathVariable @Valid Long clubId, @RequestBody @Valid ClubInDTO clubInDTO) {
         return new ResponseEntity<>(clubService.updateClubById(clubId, clubInDTO), HttpStatus.OK);
     }
 
