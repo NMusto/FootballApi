@@ -1,7 +1,8 @@
-package com.football.mappers;
+package com.football.mappers.clubMappers;
 
 import com.football.dtos.outDTO.ClubOutDTO;
 import com.football.entities.Club;
+import com.football.mappers.IMapper;
 import org.springframework.stereotype.Component;
 
 @Component

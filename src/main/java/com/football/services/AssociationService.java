@@ -129,7 +129,7 @@ public class AssociationService {
     }
 
 
-    //finds and validates Association entity exists and returns AssociationOutDTO
+    //finds and validates Association entity exists and returns IAssociationProjection
 
     public IAssociationProjection findAssociationWithProjection(Long associationId) {
         Optional<IAssociationProjection> optionalAssociationProjection = associationRepository.findAssociationById(associationId);
