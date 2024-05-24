@@ -2,7 +2,7 @@ package com.football.mappers.playerMappers;
 
 import com.football.dtos.outDTO.playerOutDTO.PlayerOutDTO;
 import com.football.mappers.IMapper;
-import com.football.projections.IPlayerProjection;
+import com.football.projections.playerProjections.IPlayerProjection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Component;

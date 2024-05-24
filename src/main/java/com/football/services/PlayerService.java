@@ -9,7 +9,7 @@ import com.football.mappers.playerMappers.PlayerInDTOToPlayer;
 import com.football.mappers.playerMappers.PlayerProjectionPageToPlayerOutDTOPage;
 import com.football.mappers.playerMappers.PlayerProjectionToPlayerOutDTO;
 import com.football.mappers.playerMappers.PlayerToPlayerOutDTO;
-import com.football.projections.IPlayerProjection;
+import com.football.projections.playerProjections.IPlayerProjection;
 import com.football.repositories.PlayerRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

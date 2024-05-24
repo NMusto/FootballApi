@@ -2,7 +2,7 @@ package com.football.mappers.associationMappers;
 
 import com.football.dtos.outDTO.associationOutDTO.AssociationOutDTO;
 import com.football.mappers.IMapper;
-import com.football.projections.IAssociationProjection;
+import com.football.projections.associationProjections.IAssociationProjection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Component;

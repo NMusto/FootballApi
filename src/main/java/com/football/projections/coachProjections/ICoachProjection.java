@@ -1,14 +1,12 @@
-package com.football.projections;
+package com.football.projections.coachProjections;
 
-public interface IPlayerProjection {
+public interface ICoachProjection {
 
     Long getId();
     String getName();
     String getLastName();
     String getNationality();
     Integer getAge();
-    String getPosition();
-    Integer getNumber();
 
     Long getClubId();
     String getClubName();

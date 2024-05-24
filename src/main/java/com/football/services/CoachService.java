@@ -9,7 +9,7 @@ import com.football.mappers.coachMappers.CoachInDTOToCoach;
 import com.football.mappers.coachMappers.CoachProjectionListToCoachOutDTOList;
 import com.football.mappers.coachMappers.CoachProjectionToCoachOutDTO;
 import com.football.mappers.coachMappers.CoachToCoachOutDTO;
-import com.football.projections.ICoachProjection;
+import com.football.projections.coachProjections.ICoachProjection;
 import com.football.repositories.ClubRepository;
 import com.football.repositories.CoachRepository;
 import org.springframework.http.HttpStatus;

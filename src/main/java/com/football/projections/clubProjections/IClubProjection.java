@@ -1,4 +1,4 @@
-package com.football.projections;
+package com.football.projections.clubProjections;
 
 public interface IClubProjection {
 

@@ -1,8 +1,8 @@
 package com.football.repositories;
 
 import com.football.entities.Association;
-import com.football.projections.IAssociationProjection;
-import com.football.projections.IClubsList;
+import com.football.projections.associationProjections.IAssociationProjection;
+import com.football.projections.clubProjections.IClubsList;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
