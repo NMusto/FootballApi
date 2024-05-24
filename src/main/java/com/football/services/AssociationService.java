@@ -103,9 +103,9 @@ public class AssociationService {
     public String deleteAssociationById(Long associatioId) {
         this.findAssociation(associatioId);
 
-        associationRepository.deleteClubsByAssociationId(associatioId);
+        associationRepository.deleteAssociationIdInClubs(associatioId);
         associationRepository.deleteById(associatioId);
-        return "Listo";
+        return "Association id: " + associatioId + " was successfully deleted.";
     }
 
 

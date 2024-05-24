@@ -49,5 +49,10 @@ public class PlayerController {
         return new ResponseEntity<>(playerService.addClub(playerId, clubId), HttpStatus.CREATED);
     }
 
+    @DeleteMapping("delete/{playerId}")
+    public ResponseEntity<String> deletePlayerById(@PathVariable @Valid Long playerId) {
+        return new ResponseEntity<>(playerService.deletePlayerById(playerId), HttpStatus.OK);
+    }
+
 
 }

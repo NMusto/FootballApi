@@ -94,6 +94,13 @@ public class PlayerService {
         return "Club id: " + clubId + " successfully added to Player id: " + playerId;
     }
 
+    public String deletePlayerById(Long playerId) {
+        this.findPlayer(playerId);
+
+        playerRepository.deleteById(playerId);
+        return "Player id: " + playerId + " was successfully deleted.";
+    }
+
 
 
     /*------------------------------------------------------------------------------------------------*/

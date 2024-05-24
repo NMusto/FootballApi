@@ -33,6 +33,6 @@ public interface AssociationRepository extends JpaRepository<Association, Long> 
     @Modifying
     @Query(value = "update club " +
             "set association_id = null " +
-            "where association_id = :associationId ", nativeQuery = true)
-    public void deleteClubsByAssociationId(@Param("associationId") Long associationId);
+            "where association_id = :associationId", nativeQuery = true)
+    public void deleteAssociationIdInClubs(@Param("associationId") Long associationId);
 }

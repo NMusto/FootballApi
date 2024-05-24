@@ -5,6 +5,9 @@ import com.football.projections.IClubProjection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -16,6 +19,12 @@ public interface ClubRepository extends JpaRepository<Club, Long> {
 
     public Optional<Club> findById(Long clubId);
 
-    public Page<IClubProjection> findAllProjetedBy (Pageable pageable);
+    public Page<IClubProjection> findAllProjetedBy(Pageable pageable);
+
+    @Modifying
+    @Query(value = "update player " +
+            "set club_id = null " +
+            "where club_id = :clubId", nativeQuery = true)
+    public void deleteClubIdInPlayers(@Param("clubId") Long clubId);
 
 }

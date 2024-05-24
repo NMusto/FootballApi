@@ -12,6 +12,8 @@ import java.util.Optional;
 @Repository
 public interface PlayerRepository extends JpaRepository<Player, Long> {
 
+    public Optional<Player> findById(Long playerId);
+
     public Optional<IPlayerProjection> findPlayerById(Long playerId);
 
     public Page<IPlayerProjection> findAllProjetedBy(Pageable pageable);
