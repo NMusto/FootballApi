@@ -14,7 +14,7 @@ import java.util.List;
 @RequestMapping("/coach")
 public class CoachController {
 
-    private CoachService coachService;
+    private final CoachService coachService;
 
     public CoachController(CoachService coachService) {
         this.coachService = coachService;

@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/club")
 public class ClubController {
 
-    private ClubService clubService;
+    private final ClubService clubService;
 
     private ClubController(ClubService clubService) {
         this.clubService = clubService;
