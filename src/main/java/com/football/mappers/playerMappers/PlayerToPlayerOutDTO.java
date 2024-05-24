@@ -1,7 +1,7 @@
 package com.football.mappers.playerMappers;
 
 
-import com.football.dtos.outDTO.PlayerOutDTO;
+import com.football.dtos.outDTO.playerOutDTO.PlayerOutDTO;
 import com.football.entities.Player;
 import com.football.mappers.IMapper;
 import org.springframework.stereotype.Component;

@@ -1,8 +1,9 @@
 package com.football.controllers;
 
 import com.football.dtos.inDTO.ClubInDTO;
-import com.football.dtos.outDTO.ClubOutDTO;
-import com.football.projections.IClubProjection;
+import com.football.dtos.outDTO.associationOutDTO.AssociationClubsOutDTO;
+import com.football.dtos.outDTO.clubOutDTO.ClubOutDTO;
+import com.football.dtos.outDTO.clubOutDTO.ClubPlayersOutDTO;
 import com.football.services.ClubService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -53,6 +54,11 @@ public class ClubController {
     @PutMapping("/addassociation/{clubId}")
     public ResponseEntity<String> addAssociation (@PathVariable @Valid Long clubId, @RequestParam(required = false) Long associationId) {
         return new ResponseEntity<>(clubService.addAssociation(clubId, associationId), HttpStatus.CREATED);
+    }
+
+    @GetMapping("/findplayers/{clubId}")
+    public ResponseEntity<ClubPlayersOutDTO> findPlayersByClubId(@PathVariable @Valid Long clubId) {
+        return new ResponseEntity<>(clubService.findAllPlayers(clubId), HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{clubId}")

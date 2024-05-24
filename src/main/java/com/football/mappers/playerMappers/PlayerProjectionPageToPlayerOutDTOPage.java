@@ -1,6 +1,6 @@
 package com.football.mappers.playerMappers;
 
-import com.football.dtos.outDTO.PlayerOutDTO;
+import com.football.dtos.outDTO.playerOutDTO.PlayerOutDTO;
 import com.football.mappers.IMapper;
 import com.football.projections.IPlayerProjection;
 import org.springframework.data.domain.Page;

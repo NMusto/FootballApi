@@ -1,7 +1,9 @@
 package com.football.services;
 
 import com.football.dtos.inDTO.ClubInDTO;
-import com.football.dtos.outDTO.ClubOutDTO;
+import com.football.dtos.outDTO.clubOutDTO.ClubOutDTO;
+import com.football.dtos.outDTO.clubOutDTO.ClubPlayersOutDTO;
+import com.football.dtos.outDTO.playerOutDTO.PlayerListOutDTO;
 import com.football.entities.Association;
 import com.football.entities.Club;
 import com.football.entities.Coach;
@@ -11,6 +13,7 @@ import com.football.mappers.clubMappers.ClubToClubOutDTO;
 import com.football.mappers.clubMappers.ClubProjectionPageToClubOutDTOPage;
 import com.football.mappers.clubMappers.ClubProjectionToClubOutDTO;
 import com.football.projections.IClubProjection;
+import com.football.projections.IPlayersList;
 import com.football.repositories.ClubRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,7 +21,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ClubService {
@@ -64,6 +69,30 @@ public class ClubService {
             throw new InfoExceptions( "There are currently no registered clubs.", HttpStatus.NOT_FOUND);
         }
         return clubProjectionPageToClubOutDTOPage.map(clubsProjection);
+    }
+
+    public ClubPlayersOutDTO findAllPlayers(Long clubId) {
+        Club club = this.findClub(clubId);
+
+        ClubPlayersOutDTO clubPlayersOutDTO = new ClubPlayersOutDTO();
+
+        clubPlayersOutDTO.setClubId(clubId);
+        clubPlayersOutDTO.setClubName(club.getName());
+
+        List<IPlayersList> playersProjections = clubRepository.findAllPlayers(clubId);
+        List<PlayerListOutDTO> playersListOutDTO = playersProjections.stream()
+                .map(playerProjection -> {
+                    PlayerListOutDTO playerListOutDTO = new PlayerListOutDTO();
+                    playerListOutDTO.setPlayerId(playerProjection.getPlayerId());
+                    playerListOutDTO.setPlayerName(playerProjection.getPlayerName());
+                    playerListOutDTO.setPlayerLastName(playerProjection.getPlayerLastName());
+                    return playerListOutDTO;
+                })
+                .collect(Collectors.toList());
+
+        clubPlayersOutDTO.setPlayers(playersListOutDTO);
+
+        return clubPlayersOutDTO;
     }
 
     public ClubOutDTO updateClubById(Long clubId, ClubInDTO clubInDTO) {

@@ -1,6 +1,6 @@
 package com.football.mappers.coachMappers;
 
-import com.football.dtos.outDTO.CoachOutDTO;
+import com.football.dtos.outDTO.coachOutDTO.CoachOutDTO;
 import com.football.mappers.IMapper;
 import com.football.projections.ICoachProjection;
 import org.springframework.stereotype.Component;

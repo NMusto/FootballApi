@@ -1,8 +1,6 @@
 package com.football.controllers;
 
 import com.football.dtos.inDTO.AssociationInDTO;
-import com.football.dtos.inDTO.CoachInDTO;
-import com.football.dtos.outDTO.CoachOutDTO;
 import com.football.dtos.outDTO.associationOutDTO.AssociationClubsOutDTO;
 import com.football.dtos.outDTO.associationOutDTO.AssociationOutDTO;
 import com.football.services.AssociationService;

@@ -1,8 +1,7 @@
 package com.football.controllers;
 
 import com.football.dtos.inDTO.CoachInDTO;
-import com.football.dtos.outDTO.CoachOutDTO;
-import com.football.projections.ICoachProjection;
+import com.football.dtos.outDTO.coachOutDTO.CoachOutDTO;
 import com.football.services.CoachService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;

@@ -1,7 +1,7 @@
 package com.football.services;
 
 import com.football.dtos.inDTO.PlayerInDTO;
-import com.football.dtos.outDTO.PlayerOutDTO;
+import com.football.dtos.outDTO.playerOutDTO.PlayerOutDTO;
 import com.football.entities.Club;
 import com.football.entities.Player;
 import com.football.exceptions.InfoExceptions;

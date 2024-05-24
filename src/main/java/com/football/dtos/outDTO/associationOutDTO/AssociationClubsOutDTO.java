@@ -1,6 +1,6 @@
 package com.football.dtos.outDTO.associationOutDTO;
 
-import com.football.dtos.outDTO.ClubsListOutDTO;
+import com.football.dtos.outDTO.clubOutDTO.ClubsListOutDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

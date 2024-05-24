@@ -1,4 +1,4 @@
-package com.football.dtos.outDTO;
+package com.football.dtos.outDTO.coachOutDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,4 +1,4 @@
-package com.football.dtos.outDTO;
+package com.football.dtos.outDTO.clubOutDTO;
 
 import com.football.entities.Association;
 import lombok.AllArgsConstructor;

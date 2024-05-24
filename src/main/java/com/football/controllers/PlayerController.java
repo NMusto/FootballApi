@@ -1,7 +1,7 @@
 package com.football.controllers;
 
 import com.football.dtos.inDTO.PlayerInDTO;
-import com.football.dtos.outDTO.PlayerOutDTO;
+import com.football.dtos.outDTO.playerOutDTO.PlayerOutDTO;
 import com.football.services.PlayerService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;

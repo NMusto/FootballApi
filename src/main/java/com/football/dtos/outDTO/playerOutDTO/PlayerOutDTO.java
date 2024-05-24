@@ -1,4 +1,4 @@
-package com.football.dtos.outDTO;
+package com.football.dtos.outDTO.playerOutDTO;
 
 import com.football.entities.Club;
 import jakarta.persistence.Column;

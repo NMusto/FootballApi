@@ -1,7 +1,7 @@
 package com.football.services;
 
 import com.football.dtos.inDTO.AssociationInDTO;
-import com.football.dtos.outDTO.ClubsListOutDTO;
+import com.football.dtos.outDTO.clubOutDTO.ClubsListOutDTO;
 import com.football.dtos.outDTO.associationOutDTO.AssociationClubsOutDTO;
 import com.football.dtos.outDTO.associationOutDTO.AssociationOutDTO;
 import com.football.entities.Association;
