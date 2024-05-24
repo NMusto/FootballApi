@@ -1,7 +1,6 @@
 package com.football.services;
 
 import com.football.dtos.inDTO.PlayerInDTO;
-import com.football.dtos.outDTO.ClubOutDTO;
 import com.football.dtos.outDTO.PlayerOutDTO;
 import com.football.entities.Player;
 import com.football.exceptions.InfoExceptions;
@@ -9,7 +8,6 @@ import com.football.mappers.playerMappers.PlayerInDTOToPlayer;
 import com.football.mappers.playerMappers.PlayerProjectionPageToPlayerOutDTOPage;
 import com.football.mappers.playerMappers.PlayerProjectionToPlayerOutDTO;
 import com.football.mappers.playerMappers.PlayerToPlayerOutDTO;
-import com.football.projections.IClubProjection;
 import com.football.projections.IPlayerProjection;
 import com.football.repositories.PlayerRepository;
 import org.springframework.data.domain.Page;
@@ -60,6 +58,21 @@ public class PlayerService {
             throw new InfoExceptions( "There are currently no registered Players.", HttpStatus.NOT_FOUND);
         }
         return playerProjectionPageToPlayerOutDTOPage.map(playerProjections);
+    }
+
+    public PlayerOutDTO updatePlayerById(Long playerId, PlayerInDTO playerInDTO) {
+        Player player = this.findPlayer(playerId);
+
+        player.setName(playerInDTO.getName());
+        player.setLastName(playerInDTO.getLastName());
+        player.setNationality(playerInDTO.getNationality());
+        player.setAge(playerInDTO.getAge());
+        player.setPosition(playerInDTO.getPosition());
+        player.setNumber(playerInDTO.getNumber());
+        playerRepository.save(player);
+
+        PlayerOutDTO playerOutDTO = playerToPlayerOutDTO.map(player);
+        return playerOutDTO;
     }
 
 

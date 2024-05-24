@@ -1,7 +1,6 @@
 package com.football.controllers;
 
 import com.football.dtos.inDTO.PlayerInDTO;
-import com.football.dtos.outDTO.ClubOutDTO;
 import com.football.dtos.outDTO.PlayerOutDTO;
 import com.football.services.PlayerService;
 import jakarta.validation.Valid;
@@ -38,5 +37,10 @@ public class PlayerController {
                                                          @RequestParam(defaultValue = "name") String name) {
         Page<PlayerOutDTO> clubs = playerService.findAllPlayers(PageRequest.of(page, size, Sort.by(name).ascending()));
         return new ResponseEntity<>(clubs, HttpStatus.OK);
+    }
+
+    @PutMapping("/update/{playerId}")
+    public ResponseEntity<PlayerOutDTO> updatePlayerById(@PathVariable @Valid Long playerId, @RequestBody @Valid PlayerInDTO playerInDTO) {
+        return new ResponseEntity<>(playerService.updatePlayerById(playerId, playerInDTO), HttpStatus.OK);
     }
 }
