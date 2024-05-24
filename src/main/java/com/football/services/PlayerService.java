@@ -2,6 +2,7 @@ package com.football.services;
 
 import com.football.dtos.inDTO.PlayerInDTO;
 import com.football.dtos.outDTO.PlayerOutDTO;
+import com.football.entities.Club;
 import com.football.entities.Player;
 import com.football.exceptions.InfoExceptions;
 import com.football.mappers.playerMappers.PlayerInDTOToPlayer;
@@ -25,17 +26,20 @@ public class PlayerService {
     private final PlayerToPlayerOutDTO playerToPlayerOutDTO;
     private final PlayerProjectionToPlayerOutDTO playerProjectionToPlayerOutDTO;
     private final PlayerProjectionPageToPlayerOutDTOPage playerProjectionPageToPlayerOutDTOPage;
+    private final ClubService clubService;
 
 
     public PlayerService(PlayerRepository playerRepository, PlayerInDTOToPlayer playerInDTOToPlayer,
                          PlayerToPlayerOutDTO playerToPlayerOutDTO,
                          PlayerProjectionToPlayerOutDTO playerProjectionToPlayerOutDTO,
-                         PlayerProjectionPageToPlayerOutDTOPage playerProjectionPageToPlayerOutDTOPage) {
+                         PlayerProjectionPageToPlayerOutDTOPage playerProjectionPageToPlayerOutDTOPage,
+                         ClubService clubService) {
         this.playerRepository = playerRepository;
         this.playerInDTOToPlayer = playerInDTOToPlayer;
         this.playerToPlayerOutDTO = playerToPlayerOutDTO;
         this.playerProjectionToPlayerOutDTO = playerProjectionToPlayerOutDTO;
         this.playerProjectionPageToPlayerOutDTOPage = playerProjectionPageToPlayerOutDTOPage;
+        this.clubService = clubService;
     }
 
 
@@ -73,6 +77,21 @@ public class PlayerService {
 
         PlayerOutDTO playerOutDTO = playerToPlayerOutDTO.map(player);
         return playerOutDTO;
+    }
+
+    public String addClub (Long playerId, Long clubId) {
+
+        Player player = this.findPlayer(playerId);
+
+        if (clubId == null) {
+            player.setClub(null);
+        }
+        else {
+            Club club = clubService.findClub(clubId);
+            player.setClub(club);
+        }
+        playerRepository.save(player);
+        return "Club id: " + clubId + " successfully added to Player id: " + playerId;
     }
 
 

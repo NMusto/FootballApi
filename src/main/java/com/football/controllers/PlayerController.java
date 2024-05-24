@@ -43,4 +43,11 @@ public class PlayerController {
     public ResponseEntity<PlayerOutDTO> updatePlayerById(@PathVariable @Valid Long playerId, @RequestBody @Valid PlayerInDTO playerInDTO) {
         return new ResponseEntity<>(playerService.updatePlayerById(playerId, playerInDTO), HttpStatus.OK);
     }
+
+    @PutMapping("/addclub/{playerId}")
+    public ResponseEntity<String> addClub (@PathVariable @Valid Long playerId, @RequestParam(required = false) Long clubId) {
+        return new ResponseEntity<>(playerService.addClub(playerId, clubId), HttpStatus.CREATED);
+    }
+
+
 }
