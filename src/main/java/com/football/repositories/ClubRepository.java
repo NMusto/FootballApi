@@ -17,9 +17,9 @@ import java.util.Optional;
 @Repository
 public interface ClubRepository extends JpaRepository<Club, Long> {
 
-    public Optional<IClubProjection> findClubById(Long clubId);
-
     public Optional<Club> findById(Long clubId);
+
+    public Optional<IClubProjection> findClubById(Long clubId);
 
     public Page<IClubProjection> findAllProjetedBy(Pageable pageable);
 
