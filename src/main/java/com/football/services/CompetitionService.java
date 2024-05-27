@@ -2,6 +2,7 @@ package com.football.services;
 
 import com.football.dtos.inDTO.CompetitionInDTO;
 import com.football.dtos.outDTO.competitionOutDTO.CompetitionOutDTO;
+import com.football.entities.Club;
 import com.football.entities.Competition;
 import com.football.exceptions.InfoExceptions;
 import com.football.mappers.competitionMappers.CompetitionInDTOToCompetition;
@@ -9,6 +10,7 @@ import com.football.mappers.competitionMappers.CompetitionProjectionListToCompet
 import com.football.mappers.competitionMappers.CompetitionProjectionToCompetitionOutDTO;
 import com.football.mappers.competitionMappers.CompetitionToCompetitionOutDTO;
 import com.football.projections.competitionProjection.ICompetitionProjection;
+import com.football.repositories.ClubRepository;
 import com.football.repositories.CompetitionRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -24,17 +26,22 @@ public class CompetitionService {
     private final CompetitionToCompetitionOutDTO competitionToCompetitionOutDTO;
     private final CompetitionProjectionToCompetitionOutDTO competitionProjectionToCompetitionOutDTO;
     private final CompetitionProjectionListToCompetitionOutDTOList competitionProjectionListToCompetitionOutDTOList;
+    private final ClubService clubService;
+    private final ClubRepository clubRepository;
 
     public CompetitionService(CompetitionRepository competitionRepository,
                               CompetitionInDTOToCompetition competitionInDTOToCompetition,
                               CompetitionToCompetitionOutDTO competitionToCompetitionOutDTO,
                               CompetitionProjectionToCompetitionOutDTO competitionProjectionToCompetitionOutDTO,
-                              CompetitionProjectionListToCompetitionOutDTOList competitionProjectionListToCompetitionOutDTOList) {
+                              CompetitionProjectionListToCompetitionOutDTOList competitionProjectionListToCompetitionOutDTOList,
+                              ClubService clubService, ClubRepository clubRepository) {
         this.competitionRepository = competitionRepository;
         this.competitionInDTOToCompetition = competitionInDTOToCompetition;
         this.competitionToCompetitionOutDTO = competitionToCompetitionOutDTO;
         this.competitionProjectionToCompetitionOutDTO = competitionProjectionToCompetitionOutDTO;
         this.competitionProjectionListToCompetitionOutDTOList = competitionProjectionListToCompetitionOutDTOList;
+        this.clubService = clubService;
+        this.clubRepository = clubRepository;
     }
 
     public CompetitionOutDTO createCompetition(CompetitionInDTO competitionInDTO) {
@@ -70,6 +77,20 @@ public class CompetitionService {
         ICompetitionProjection iCompetitionProjection = this.findCompetitionWithProjection(competitionId);
         CompetitionOutDTO competitionOutDTO = competitionProjectionToCompetitionOutDTO.map(iCompetitionProjection);
         return competitionOutDTO;
+    }
+
+    public String addClub (Long competitionId, Long clubId) {
+
+        Competition competition = this.findCompetition(competitionId);
+        Club club = clubService.findClub(clubId);
+
+        competition.getClubs().add(club);
+        club.getCompetitions().add(competition);
+
+        competitionRepository.save(competition);
+        clubRepository.save(club);
+
+        return "Club id: " + clubId + " successfully added to Competition id: " + competitionId;
     }
 
 

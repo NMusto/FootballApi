@@ -40,4 +40,9 @@ public class CompetitionController {
         return new ResponseEntity<>(competitionService.updateCompetitionById(competitionId, competitionInDTO), HttpStatus.OK);
     }
 
+    @PutMapping("/addclub/{competitionId}/{clubId}")
+    public ResponseEntity<String> addClub(@PathVariable @Valid Long competitionId, @PathVariable @Valid Long clubId) {
+        return new ResponseEntity<>(competitionService.addClub(competitionId, clubId), HttpStatus.CREATED);
+    }
+
 }
