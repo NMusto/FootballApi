@@ -35,4 +35,9 @@ public class CompetitionController {
         return new ResponseEntity<>(competitionService.findAllCompetitions(), HttpStatus.OK);
     }
 
+    @PutMapping("/update/{competitionId}")
+    public ResponseEntity<CompetitionOutDTO> updateCompetitionById(@PathVariable @Valid Long competitionId, @RequestBody @Valid CompetitionInDTO competitionInDTO) {
+        return new ResponseEntity<>(competitionService.updateCompetitionById(competitionId, competitionInDTO), HttpStatus.OK);
+    }
+
 }

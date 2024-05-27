@@ -58,6 +58,20 @@ public class CompetitionService {
         return competitionProjectionListToCompetitionOutDTOList.map(competitionsProjection);
     }
 
+    public CompetitionOutDTO updateCompetitionById(Long competitionId, CompetitionInDTO competitionInDTO) {
+        Competition competition = this.findCompetition(competitionId);
+
+        competition.setName(competitionInDTO.getName());
+        competition.setQuantityPrice(competitionInDTO.getQuantityPrice());
+        competition.setStartDate(competitionInDTO.getStartDate());
+        competition.setEndDate(competitionInDTO.getEndDate());
+        competitionRepository.save(competition);
+
+        ICompetitionProjection iCompetitionProjection = this.findCompetitionWithProjection(competitionId);
+        CompetitionOutDTO competitionOutDTO = competitionProjectionToCompetitionOutDTO.map(iCompetitionProjection);
+        return competitionOutDTO;
+    }
+
 
 
 
