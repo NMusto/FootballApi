@@ -20,11 +20,11 @@ public class CompetitionProjectionListToCompetitionOutDTOList implements IMapper
     @Override
     public List<CompetitionOutDTO> map(List<ICompetitionProjection> competitionProjectionList) {
 
-        List<CompetitionOutDTO> competitionOutDTOList = competitionProjectionList.stream()
+        List<CompetitionOutDTO> competitionOutDTOSet = competitionProjectionList.stream()
                 .map(competitionProjection -> competitionProjectionToCompetitionOutDTO.map(competitionProjection))
                 .collect(Collectors.toList());
 
-        return competitionOutDTOList;
+        return competitionOutDTOSet;
     }
 
 

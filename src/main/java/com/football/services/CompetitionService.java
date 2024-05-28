@@ -1,19 +1,24 @@
 package com.football.services;
 
 import com.football.dtos.inDTO.CompetitionInDTO;
+import com.football.dtos.outDTO.clubOutDTO.ClubsListOutDTO;
+import com.football.dtos.outDTO.competitionOutDTO.CompetitionClubsOutDTO;
 import com.football.dtos.outDTO.competitionOutDTO.CompetitionOutDTO;
 import com.football.entities.Club;
 import com.football.entities.Competition;
 import com.football.exceptions.InfoExceptions;
+import com.football.mappers.clubMappers.ClubProjectionListToClubOutDTOList;
 import com.football.mappers.competitionMappers.CompetitionInDTOToCompetition;
 import com.football.mappers.competitionMappers.CompetitionProjectionListToCompetitionOutDTOList;
 import com.football.mappers.competitionMappers.CompetitionProjectionToCompetitionOutDTO;
 import com.football.mappers.competitionMappers.CompetitionToCompetitionOutDTO;
+import com.football.projections.clubProjections.IClubsList;
 import com.football.projections.competitionProjection.ICompetitionProjection;
 import com.football.repositories.ClubRepository;
 import com.football.repositories.CompetitionRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -28,13 +33,15 @@ public class CompetitionService {
     private final CompetitionProjectionListToCompetitionOutDTOList competitionProjectionListToCompetitionOutDTOList;
     private final ClubService clubService;
     private final ClubRepository clubRepository;
+    private final ClubProjectionListToClubOutDTOList clubProjectionListToClubOutDTOList;
 
     public CompetitionService(CompetitionRepository competitionRepository,
                               CompetitionInDTOToCompetition competitionInDTOToCompetition,
                               CompetitionToCompetitionOutDTO competitionToCompetitionOutDTO,
                               CompetitionProjectionToCompetitionOutDTO competitionProjectionToCompetitionOutDTO,
                               CompetitionProjectionListToCompetitionOutDTOList competitionProjectionListToCompetitionOutDTOList,
-                              ClubService clubService, ClubRepository clubRepository) {
+                              ClubService clubService, ClubRepository clubRepository,
+                              ClubProjectionListToClubOutDTOList clubProjectionListToClubOutDTOList) {
         this.competitionRepository = competitionRepository;
         this.competitionInDTOToCompetition = competitionInDTOToCompetition;
         this.competitionToCompetitionOutDTO = competitionToCompetitionOutDTO;
@@ -42,6 +49,7 @@ public class CompetitionService {
         this.competitionProjectionListToCompetitionOutDTOList = competitionProjectionListToCompetitionOutDTOList;
         this.clubService = clubService;
         this.clubRepository = clubRepository;
+        this.clubProjectionListToClubOutDTOList = clubProjectionListToClubOutDTOList;
     }
 
     public CompetitionOutDTO createCompetition(CompetitionInDTO competitionInDTO) {
@@ -91,6 +99,31 @@ public class CompetitionService {
         clubRepository.save(club);
 
         return "Club id: " + clubId + " successfully added to Competition id: " + competitionId;
+    }
+
+    public CompetitionClubsOutDTO findClubsByCompetitionId(Long competitionId) {
+
+        Competition competition = this.findCompetition(competitionId);
+
+        CompetitionClubsOutDTO competitionClubsOutDTO = new CompetitionClubsOutDTO();
+        competitionClubsOutDTO.setCompetitionId(competition.getId());
+        competitionClubsOutDTO.setCompetitionName(competition.getName());
+
+        List<IClubsList> clubsListsProjection = competitionRepository.findAllClubsByCompetitionId(competitionId);
+
+        List<ClubsListOutDTO> clubsListOutDTOS = clubProjectionListToClubOutDTOList.map(clubsListsProjection);
+
+        competitionClubsOutDTO.setClubs(clubsListOutDTOS);
+
+        return competitionClubsOutDTO;
+    }
+
+    @Transactional
+    public String deleteClubFromCompetition(Long competitioId, Long clubId) {
+
+        competitionRepository.deleteClubFromCompetition(competitioId, clubId);
+
+        return "Club Id: " + clubId + " was successfully deleted from Competition Id: " + competitioId;
     }
 
 
