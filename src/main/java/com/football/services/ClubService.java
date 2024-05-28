@@ -1,8 +1,10 @@
 package com.football.services;
 
 import com.football.dtos.inDTO.ClubInDTO;
+import com.football.dtos.outDTO.clubOutDTO.ClubCompetitionsOutDTO;
 import com.football.dtos.outDTO.clubOutDTO.ClubOutDTO;
 import com.football.dtos.outDTO.clubOutDTO.ClubPlayersOutDTO;
+import com.football.dtos.outDTO.competitionOutDTO.CompetitionOutDTO;
 import com.football.dtos.outDTO.playerOutDTO.PlayerListOutDTO;
 import com.football.entities.Association;
 import com.football.entities.Club;
@@ -12,7 +14,9 @@ import com.football.mappers.clubMappers.ClubInDTOToClub;
 import com.football.mappers.clubMappers.ClubToClubOutDTO;
 import com.football.mappers.clubMappers.ClubProjectionPageToClubOutDTOPage;
 import com.football.mappers.clubMappers.ClubProjectionToClubOutDTO;
+import com.football.mappers.competitionMappers.CompetitionProjectionListToCompetitionOutDTOList;
 import com.football.projections.clubProjections.IClubProjection;
+import com.football.projections.competitionProjection.ICompetitionProjection;
 import com.football.projections.playerProjections.IPlayersList;
 import com.football.repositories.ClubRepository;
 import org.springframework.data.domain.Page;
@@ -35,12 +39,14 @@ public class ClubService {
     private final AssociationService associationService;
     private final ClubProjectionToClubOutDTO clubProjectionToClubOutDTO;
     private final ClubProjectionPageToClubOutDTOPage clubProjectionPageToClubOutDTOPage;
+    private final CompetitionProjectionListToCompetitionOutDTOList competitionProjectionListToCompetitionOutDTOList;
 
     public ClubService(ClubRepository clubRepository, CoachService coachService,
                        ClubInDTOToClub clubInDTOToClub, ClubToClubOutDTO clubToClubOutDTO,
                        AssociationService associationService,
                        ClubProjectionToClubOutDTO clubProjectionToClubOutDTO,
-                       ClubProjectionPageToClubOutDTOPage clubProjectionPageToClubOutDTOPage) {
+                       ClubProjectionPageToClubOutDTOPage clubProjectionPageToClubOutDTOPage,
+                       CompetitionProjectionListToCompetitionOutDTOList competitionProjectionListToCompetitionOutDTOList) {
         this.clubRepository = clubRepository;
         this.clubInDTOToClub = clubInDTOToClub;
         this.clubToClubOutDTO = clubToClubOutDTO;
@@ -48,6 +54,7 @@ public class ClubService {
         this.associationService = associationService;
         this.clubProjectionToClubOutDTO = clubProjectionToClubOutDTO;
         this.clubProjectionPageToClubOutDTOPage = clubProjectionPageToClubOutDTOPage;
+        this.competitionProjectionListToCompetitionOutDTOList = competitionProjectionListToCompetitionOutDTOList;
     }
 
     public ClubOutDTO createClub(ClubInDTO clubInDTO) {
@@ -135,6 +142,24 @@ public class ClubService {
         }
         clubRepository.save(club);
         return "Association id: " + associationId + " successfully added to Club id: " + clubId;
+    }
+
+    public ClubCompetitionsOutDTO findCompetitionsByClubId(Long clubId) {
+
+        Club club = findClub(clubId);
+
+        ClubCompetitionsOutDTO clubCompetitionsOutDTO = new ClubCompetitionsOutDTO();
+
+        clubCompetitionsOutDTO.setClubId(club.getId());
+        clubCompetitionsOutDTO.setClubName(club.getName());
+
+        List<ICompetitionProjection> competitionProjectionList = clubRepository.findCompetitionsByClubId(clubId);
+
+        List<CompetitionOutDTO> competitionOutDTOList = competitionProjectionListToCompetitionOutDTOList.map(competitionProjectionList);
+
+        clubCompetitionsOutDTO.setCompetitions(competitionOutDTOList);
+
+        return clubCompetitionsOutDTO;
     }
 
     @Transactional

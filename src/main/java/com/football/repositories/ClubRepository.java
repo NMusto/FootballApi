@@ -2,6 +2,7 @@ package com.football.repositories;
 
 import com.football.entities.Club;
 import com.football.projections.clubProjections.IClubProjection;
+import com.football.projections.competitionProjection.ICompetitionProjection;
 import com.football.projections.playerProjections.IPlayersList;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -33,5 +34,10 @@ public interface ClubRepository extends JpaRepository<Club, Long> {
             "set club_id = null " +
             "where club_id = :clubId", nativeQuery = true)
     public void deleteClubIdInPlayers(@Param("clubId") Long clubId);
+
+    @Query(value = "SELECT comp.* FROM competition comp " +
+            "JOIN club_competition cc ON comp.id = cc.competition_id " +
+            "WHERE cc.club_id = :clubId", nativeQuery = true)
+    public List<ICompetitionProjection> findCompetitionsByClubId(@Param("clubId") Long clubId);
 
 }
