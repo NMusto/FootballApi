@@ -10,6 +10,7 @@ import com.football.mappers.associationMappers.AssociationInDTOToAssociation;
 import com.football.mappers.associationMappers.AssociationToAssociationOutDTO;
 import com.football.mappers.associationMappers.AssociationProjectionPageToAssociationOutDTOPage;
 import com.football.mappers.associationMappers.AssociationProjectionToAssociationOutDTO;
+import com.football.mappers.clubMappers.ClubProjectionListToClubOutDTOList;
 import com.football.projections.associationProjections.IAssociationProjection;
 import com.football.projections.clubProjections.IClubsList;
 import com.football.repositories.AssociationRepository;
@@ -21,7 +22,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class AssociationService {
@@ -31,16 +31,19 @@ public class AssociationService {
     private final AssociationToAssociationOutDTO associationToAssociationOutDTO;
     private final AssociationProjectionToAssociationOutDTO associationProjectionToAssociationOutDTO;
     private final AssociationProjectionPageToAssociationOutDTOPage AssociationProjectionPageToAssociationOutDTOPage;
+    private final ClubProjectionListToClubOutDTOList clubProjectionListToClubOutDTOList;
 
     public AssociationService(AssociationRepository associationRepository, AssociationToAssociationOutDTO associationToAssociationOutDTO,
                               AssociationInDTOToAssociation associationInDTOToAssociation,
                               AssociationProjectionToAssociationOutDTO associationProjectionToAssociationOutDTO,
-                              AssociationProjectionPageToAssociationOutDTOPage AssociationProjectionPageToAssociationOutDTOPage) {
+                              AssociationProjectionPageToAssociationOutDTOPage AssociationProjectionPageToAssociationOutDTOPage,
+                              ClubProjectionListToClubOutDTOList clubProjectionListToClubOutDTOList) {
         this.associationRepository = associationRepository;
         this.associationInDTOToAssociation = associationInDTOToAssociation;
         this.associationToAssociationOutDTO = associationToAssociationOutDTO;
         this.associationProjectionToAssociationOutDTO = associationProjectionToAssociationOutDTO;
         this.AssociationProjectionPageToAssociationOutDTOPage = AssociationProjectionPageToAssociationOutDTOPage;
+        this.clubProjectionListToClubOutDTOList = clubProjectionListToClubOutDTOList;
     }
 
     public AssociationOutDTO createAssociation(AssociationInDTO associationInDTO) {
@@ -65,6 +68,7 @@ public class AssociationService {
     }
 
     public AssociationClubsOutDTO findAllClubs(Long associationId) {
+
         Association association = this.findAssociation(associationId);
 
         AssociationClubsOutDTO associationClubsOutDTO = new AssociationClubsOutDTO();
@@ -73,14 +77,8 @@ public class AssociationService {
         associationClubsOutDTO.setAssociationName(association.getName());
 
         List<IClubsList> clubsProjections = associationRepository.findAllClubs(associationId);
-        List<ClubsListOutDTO> clubsListOutDTOS = clubsProjections.stream()
-                .map(clubProjection -> {
-                    ClubsListOutDTO clubsListOutDTO = new ClubsListOutDTO();
-                    clubsListOutDTO.setClubId(clubProjection.getClubId());
-                    clubsListOutDTO.setClubName(clubProjection.getClubName());
-                    return clubsListOutDTO;
-                })
-                .collect(Collectors.toList());
+
+        List<ClubsListOutDTO> clubsListOutDTOS = clubProjectionListToClubOutDTOList.map(clubsProjections);
 
         associationClubsOutDTO.setClubs(clubsListOutDTOS);
 

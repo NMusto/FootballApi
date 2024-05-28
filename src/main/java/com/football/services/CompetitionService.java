@@ -106,6 +106,7 @@ public class CompetitionService {
         Competition competition = this.findCompetition(competitionId);
 
         CompetitionClubsOutDTO competitionClubsOutDTO = new CompetitionClubsOutDTO();
+
         competitionClubsOutDTO.setCompetitionId(competition.getId());
         competitionClubsOutDTO.setCompetitionName(competition.getName());
 
