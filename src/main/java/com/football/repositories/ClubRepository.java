@@ -35,9 +35,12 @@ public interface ClubRepository extends JpaRepository<Club, Long> {
             "where club_id = :clubId", nativeQuery = true)
     public void deleteClubIdInPlayers(@Param("clubId") Long clubId);
 
+
     @Query(value = "SELECT comp.* FROM competition comp " +
             "JOIN club_competition cc ON comp.id = cc.competition_id " +
             "WHERE cc.club_id = :clubId", nativeQuery = true)
     public List<ICompetitionProjection> findCompetitionsByClubId(@Param("clubId") Long clubId);
+
+
 
 }

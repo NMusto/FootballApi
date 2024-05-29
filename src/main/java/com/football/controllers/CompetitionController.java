@@ -56,4 +56,9 @@ public class CompetitionController {
         return new ResponseEntity<>(competitionService.deleteClubFromCompetition(competitionId, clubId), HttpStatus.OK);
     }
 
+    @DeleteMapping("/delete/{competitionId}")
+    public ResponseEntity<String> deleteCompetitionById(@PathVariable @Valid Long competitionId) {
+        return new ResponseEntity<>(competitionService.deleteCompetitionById(competitionId), HttpStatus.OK);
+    }
+
 }

@@ -32,4 +32,9 @@ public interface CompetitionRepository extends JpaRepository<Competition, Long> 
     @Query(value = "DELETE FROM club_competition " +
             "WHERE club_id = :clubId AND competition_id = :competitionId", nativeQuery = true)
     public void deleteClubFromCompetition(@Param("competitionId") Long competitionId, @Param("clubId") Long clubId);
+
+    @Modifying
+    @Query(value = "DELETE FROM club_competition " +
+            "WHERE competition_id = :competitionId", nativeQuery = true)
+    public void deleteClubsFromCompetition(@Param("competitionId") Long competitionId);
 }

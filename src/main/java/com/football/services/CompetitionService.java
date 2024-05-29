@@ -127,6 +127,17 @@ public class CompetitionService {
         return "Club Id: " + clubId + " was successfully deleted from Competition Id: " + competitioId;
     }
 
+    @Transactional
+    public String deleteCompetitionById(Long competitionId) {
+
+        Competition competition = this.findCompetition(competitionId);
+
+        competitionRepository.deleteClubsFromCompetition(competitionId);
+        competitionRepository.deleteById(competitionId);
+
+        return "Competition id: " + competitionId + " was successfully deleted.";
+    }
+
 
 
 
